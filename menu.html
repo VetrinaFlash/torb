@@ -132,9 +132,7 @@
             .filters-container { justify-content: center; }
             .category-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
             .category-title { grid-column: span 2; }
-            .menu-item { margin: 0; }
-            
-            /* Su PC mostriamo i consigli affiancati a 3 colonne */
+            .menu-item { margin: 0; height: 100%; }
             .upsell-container { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
@@ -214,6 +212,7 @@
                         <label>Note Cucina / Cotture</label>
                         <textarea id="cust-notes" rows="2" placeholder="Es. Hamburger ben cotto..."></textarea>
                     </div>
+                    
                     
                     <button class="btn-confirm-order" onclick="sendOrderWithDetails()" id="pay-btn">
                         <i class="fa-solid fa-credit-card"></i> Paga (SumUp)
@@ -456,7 +455,7 @@
             while(upsells.length < 3 && food.length > 0) upsells.push(food.pop());
 
             upsells.forEach(u => {
-                uc.innerHTML += `<div class="upsell-card"><h4>${u.name}</h4><p style="color:var(--accent-gold);font-weight:bold;">${u.price.toFixed(2)}€</p><button class="btn-upsell" onclick="updateQty(${u.id},1); openRecap();">+ Aggiungi</button></div>`;
+                uc.innerHTML += `<div class="upsell-card"><h4>${u.name}</h4><p style="color:var(--accent-gold);font-weight:bold; font-size: 1.1rem;">${u.price.toFixed(2)}€</p><button class="btn-upsell" onclick="updateQty(${u.id},1); openRecap();">+ Aggiungi</button></div>`;
             });
             document.getElementById('recap-modal').classList.add('active');
         }
@@ -464,21 +463,45 @@
         function proceedToCheckout() { closeRecap(); popolaOrari(); document.getElementById('checkout-modal').classList.add('active'); }
         function closeCheckout() { document.getElementById('checkout-modal').classList.remove('active'); }
 
-        // ORARI (Ogni 15 min)
+        // ORARI ANTIPROIETTILE (Ogni 15 min, calcolo dopo mezzanotte corretto)
         function popolaOrari() {
-            const sel = document.getElementById('orario-consegna'); sel.innerHTML = '';
-            let d = new Date(); d.setMinutes(d.getMinutes() + 15);
-            let h = d.getHours(), m = d.getMinutes(), r = m%15;
-            if(r!==0) m += (15-r); if(m>=60) { m-=60; h++; }
-            for(let i=0; i<12; i++) {
-                if(h>23) break;
-                sel.innerHTML += `<option value="${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}">${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}</option>`;
-                m+=15; if(m>=60) { m-=60; h++; }
+            const select = document.getElementById('orario-consegna');
+            select.innerHTML = '';
+            
+            let now = new Date();
+            now.setMinutes(now.getMinutes() + 15);
+            
+            let h = now.getHours();
+            let m = now.getMinutes();
+            
+            let remainder = m % 15;
+            if (remainder !== 0) {
+                m = m + (15 - remainder);
+            }
+            if (m >= 60) { m -= 60; h++; }
+
+            let slotAggiunti = 0;
+            // Generiamo le opzioni per le prossime 3 ore, accettando orari dopo mezzanotte (h >= 24)
+            for(let i=0; i<12; i++) { 
+                let displayH = h % 24; 
+                let hh = String(displayH).padStart(2, '0');
+                let mm = String(m).padStart(2, '0');
+                
+                select.innerHTML += `<option value="${hh}:${mm}">${hh}:${mm}</option>`;
+                slotAggiunti++;
+                
+                m += 15;
+                if (m >= 60) { m -= 60; h++; }
+            }
+
+            if (slotAggiunti === 0) {
+                select.innerHTML = `<option value="">Locale chiuso</option>`;
+                document.getElementById('pay-btn').disabled = true;
             }
         }
 
         // CHECKOUT SUMUP
-       async function sendOrderWithDetails() {
+        async function sendOrderWithDetails() {
             const name = document.getElementById('cust-name').value.trim();
             const time = document.getElementById('orario-consegna').value;
             const notes = document.getElementById('cust-notes').value.trim();
@@ -517,8 +540,6 @@
             btn.disabled = true;
 
             try {
-                // ⚠️ SE IL TUO WORKER NON È SULLO STESSO DOMINIO, INSERISCI QUI IL LINK COMPLETO:
-                // Esempio: const WORKER_URL = "https://mio-worker.xyz.workers.dev/paga";
                 const WORKER_URL = "/paga"; 
 
                 const response = await fetch(WORKER_URL, {
@@ -541,7 +562,6 @@
                         id: 'sumup-card', 
                         checkoutId: data.checkoutId,
                         
-                        // IMPOSTAZIONI AGGIORNATE PER TORB
                         googlePay: { merchantId: 'INSERISCI_ID_GOOGLE', merchantName: 'TORB Birreria' },
                         applePay: { merchantName: 'TORB Birreria' },
 
