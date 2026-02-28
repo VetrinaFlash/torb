@@ -84,39 +84,11 @@
         .btn-remove-recap { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
         .btn-remove-recap:hover { color: var(--accent-fire); border-color: var(--accent-fire); background: #fff5f5; }
 
-        /* UPSELL (CONSIGLI) */
-        .upsell-container { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 12px; 
-            padding-bottom: 10px; 
-            margin-top: 15px;
-        }
-        .upsell-card { 
-            background: var(--bg-body); 
-            border: 1px solid var(--border-light); 
-            padding: 15px; 
-            border-radius: 8px; 
-            text-align: center; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        /* UPSELL */
+        .upsell-container { display: grid; grid-template-columns: 1fr; gap: 12px; padding-bottom: 10px; margin-top: 15px; }
+        .upsell-card { background: var(--bg-body); border: 1px solid var(--border-light); padding: 15px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
         .upsell-card h4 { font-size: 0.95rem; margin-bottom: 8px; color: var(--text-main); font-weight: 700;}
-        .btn-upsell { 
-            background: transparent; 
-            color: var(--accent-gold); 
-            border: 1px solid var(--accent-gold); 
-            padding: 10px; 
-            border-radius: 4px; 
-            font-size: 0.8rem; 
-            font-weight: 800; 
-            width: 100%; 
-            text-transform: uppercase; 
-            margin-top: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+        .btn-upsell { background: transparent; color: var(--accent-gold); border: 1px solid var(--accent-gold); padding: 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 800; width: 100%; text-transform: uppercase; margin-top: 10px; cursor: pointer; transition: all 0.3s; }
         .btn-upsell:hover { background: var(--accent-gold); color: #ffffff; }
 
         .form-group { margin-bottom: 18px; }
@@ -234,7 +206,6 @@
     </div>
 
     <script>
-        // MENU ESTRATTO DAL PDF TORB
         const menuData = [
             {
                 id: "antipasti", category: "Antipasti",
@@ -276,6 +247,48 @@
                     { id: 403, name: "Friarielli", desc: "", price: 6.00 },
                     { id: 404, name: "Insalata verde", desc: "", price: 4.00 },
                     { id: 405, name: "Rucola e pomodorini", desc: "", price: 5.00 }
+                ]
+            },
+            {
+                id: "birre-spina", category: "Birre alla Spina",
+                items: [
+                    { id: 701, name: "Krombacher Pils 20cl", desc: "Dorata, Stile: Pils (Alc: 4.8% Germania)", price: 3.50 },
+                    { id: 702, name: "Krombacher Pils 40cl", desc: "Dorata, Stile: Pils (Alc: 4.8% Germania)", price: 5.50 },
+                    { id: 703, name: "Torb 20cl", desc: "Ambrata, Stile: Smoked Ale (Alc: 5.8% Italia)", price: 4.00 },
+                    { id: 704, name: "Torb 40cl", desc: "Ambrata, Stile: Smoked Ale (Alc: 5.8% Italia)", price: 7.00 },
+                    { id: 705, name: "Gouden Carolus Classic 33cl", desc: "Ambrata, Stile: Belgian Ale (Alc: 8.5%)", price: 8.00 }
+                ]
+            },
+            {
+                id: "birre-bottiglia", category: "Birre in Bottiglia",
+                items: [
+                    { id: 711, name: "Hofbrau Munchen - Pure", desc: "Dorata Chiara, Helles (Alc: 5.3% Germania) - 33cl", price: 4.50 },
+                    { id: 712, name: "Flensburger - Gold", desc: "Dorata, Export Lager (Alc: 4.8% Germania) - 33cl", price: 6.50 },
+                    { id: 713, name: "Flensburger - Weizen", desc: "Dorata Velata, Hefeweizen (Alc: 5.1% Germania) - 33cl", price: 6.50 },
+                    { id: 714, name: "Flensburger - Dunkel", desc: "Ambrata Scura, Dunkel Lager (Alc: 4.8% Germania) - 33cl", price: 6.50 },
+                    { id: 715, name: "Ventitre - Mida", desc: "Dorata, Belgian Golden Strong (Alc: 8% Italia) - 33cl", price: 10.00 },
+                    { id: 716, name: "Tyris - Marzen", desc: "Ambrata, Märzen (Alc: 5.5% Spagna) - 33cl", price: 9.00 },
+                    { id: 717, name: "Gouden Carolus - Ambrio", desc: "Ambrata, Belgian Amber Ale (Alc: 8% Belgio) - 33cl", price: 9.50 },
+                    { id: 718, name: "Gouden Carolus - Triple", desc: "Dorata, Belgian Triple (Alc: 9% Belgio) - 33cl", price: 9.50 },
+                    { id: 719, name: "Krombacher Pils Alkoholfree", desc: "Pils Analcolica (Alc: 0% Germania) - 33cl", price: 4.00 }
+                ]
+            },
+            {
+                id: "vini", category: "Vini & Bollicine",
+                items: [
+                    { id: 801, name: "Prosecco Doc Frescobaldi", desc: "Bollicine", price: 25.00 },
+                    { id: 802, name: "Dubl Brut", desc: "Bollicine - Feudi di San Gregorio", price: 50.00 },
+                    { id: 803, name: "Ca' del Bosco Prestige", desc: "Bollicine", price: 70.00 },
+                    { id: 804, name: "Greco di Tufo Docg", desc: "Vino Bianco - Feudi di San Gregorio", price: 25.00 },
+                    { id: 805, name: "Fiano di Avellino Doc", desc: "Vino Bianco - Feudi di San Gregorio", price: 25.00 },
+                    { id: 806, name: "Falanghina Doc", desc: "Vino Bianco - Feudi di San Gregorio", price: 22.00 },
+                    { id: 807, name: "Alie - Toscana Igt Frescobaldi", desc: "Vino Rosato", price: 24.00 },
+                    { id: 808, name: "Dubl Rosé Brut", desc: "Vino Rosato - Feudi di San Gregorio", price: 50.00 },
+                    { id: 809, name: "Sabbienere", desc: "Vino Rosso, Aglianico Irpinia Doc - Feudi di San Gregorio", price: 25.00 },
+                    { id: 810, name: "Erre", desc: "Vino Rosso, Falerno del Massico Doc - Trabucco", price: 27.00 },
+                    { id: 811, name: "Terra d'Eclano", desc: "Vino Rosso, Aglianico Irpinia Doc - Quintodecimo", price: 60.00 },
+                    { id: 812, name: "Selva di Luoti", desc: "Vino Rosso, Taurasi Docg - Feudi di San Gregorio", price: 45.00 },
+                    { id: 813, name: "Gragnano Doc", desc: "Vino Rosso - Antiche Radici", price: 19.00 }
                 ]
             },
             {
@@ -330,7 +343,10 @@
             menuData.forEach(cat => {
                 let html = `<div class="category-section" id="cat-${cat.id}"><h2 class="category-title">${cat.category}</h2>`;
                 cat.items.forEach(item => {
-                    let customBtn = (cat.id === 'bibite' || cat.id === 'contorni' || !item.desc) ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen"></i> Rimuovi Ingr.</button>`;
+                    // Nascondi tasto personalizza se è una bevanda, birra, vino o contorno
+                    let hideCustomBtn = (cat.id === 'bibite' || cat.id === 'birre-spina' || cat.id === 'birre-bottiglia' || cat.id === 'vini' || cat.id === 'contorni' || !item.desc);
+                    let customBtn = hideCustomBtn ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen"></i> Rimuovi Ingr.</button>`;
+                    
                     html += `
                         <div class="menu-item">
                             <div class="item-header">
@@ -451,15 +467,18 @@
 
             const uc = document.getElementById('upsell-container'); uc.innerHTML = '';
             let inCart = Object.keys(cart).filter(k=>cart[k]>0).map(k=>itemMap[k]?.baseId || itemMap[k]?.id);
-            let hasDrink = inCart.some(id => itemMap[id]?.categoryId === 'bibite');
+            
+            // Logica per capire se ha già inserito una bevanda
+            const drinkCategories = ['bibite', 'birre-spina', 'birre-bottiglia', 'vini'];
+            let hasDrink = inCart.some(id => drinkCategories.includes(itemMap[id]?.categoryId));
             let available = []; menuData.forEach(c=>c.items.forEach(i=> { if(!inCart.includes(i.id)) available.push(i); }));
             
             let upsells = [];
             if(!hasDrink) {
-                let dr = available.filter(i=>i.categoryId==='bibite').sort(()=>0.5-Math.random());
+                let dr = available.filter(i=> drinkCategories.includes(i.categoryId)).sort(()=>0.5-Math.random());
                 if(dr.length) upsells.push(dr[0]);
             }
-            let food = available.filter(i=>i.categoryId!=='bibite' && !upsells.includes(i)).sort(()=>0.5-Math.random());
+            let food = available.filter(i=> !drinkCategories.includes(i.categoryId) && !upsells.includes(i)).sort(()=>0.5-Math.random());
             while(upsells.length < 3 && food.length > 0) upsells.push(food.pop());
 
             upsells.forEach(u => {
