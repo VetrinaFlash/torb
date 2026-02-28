@@ -1,61 +1,64 @@
-// 1. Questa funzione riceve i dati del carrello (metodo POST)
-export async function onRequestPost(context) {
-  const { env, request } = context;
+export async function onRequestPost({ request, env }) {
+    try {
+        const body = await request.json();
+        const { items, orderId } = body;
 
-  // Intestazioni per evitare blocchi del browser
-  const corsHeaders = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  };
+        // Recupera le chiavi da Cloudflare
+        const SUMUP_API_KEY = env.SUMUP_SECRET_KEY;
+        const MERCHANT_EMAIL = env.SUMUP_EMAIL;
 
-  try {
-    const body = await request.json();
-    const cartItems = body.items || [];
-    
-    // Calcola il totale
-    let totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    totalAmount = Math.round(totalAmount * 100) / 100;
+        // 1. CONTROLLO CLOUDFLARE: Le variabili esistono?
+        if (!SUMUP_API_KEY || !MERCHANT_EMAIL) {
+            return new Response(JSON.stringify({ 
+                error: "ERRORE CLOUDFLARE: La variabile SUMUP_SECRET_KEY o SUMUP_EMAIL è vuota. Se le hai inserite in Cloudflare, devi fare un nuovo commit su GitHub per fare il Re-Deploy!" 
+            }), { 
+                status: 401, 
+                headers: { "Content-Type": "application/json" } 
+            });
+        }
 
-    // Invia la richiesta a SumUp
-    const response = await fetch('https://api.sumup.com/v0.1/checkouts', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${env.SUMUP_SECRET_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        checkout_reference: `PB-${Date.now()}`,
-        amount: totalAmount,
-        currency: "EUR",
-        pay_to_email: env.SUMUP_EMAIL,
-        description: "Ordine TORB"
-      })
-    });
+        // Calcolo totale
+        let amount = items.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
 
-    const data = await response.json();
+        // Richiesta a SumUp
+        const sumupResponse = await fetch('https://api.sumup.com/v0.1/checkouts', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${SUMUP_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                checkout_reference: orderId,
+                amount: parseFloat(amount.toFixed(2)),
+                currency: "EUR",
+                pay_to_email: MERCHANT_EMAIL,
+                description: `Ordine TORB - ${orderId}`
+            })
+        });
 
-    // Restituisce l'ID di SumUp al tuo menu.html
-return new Response(JSON.stringify({ checkoutId: data.id }), {
-	  status: response.status, 
-      headers: corsHeaders 
-    });
+        const data = await sumupResponse.json();
 
-  } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { 
-      status: 500, 
-      headers: corsHeaders 
-    });
-  }
-}
+        // 2. CONTROLLO SUMUP: La chiave è accettata?
+        if (!sumupResponse.ok) {
+            return new Response(JSON.stringify({ 
+                error: "ERRORE SUMUP: Accesso negato (401). La chiave API inserita non è valida, è scaduta, oppure l'email è sbagliata.", 
+                details: data 
+            }), { 
+                status: 401, 
+                headers: { "Content-Type": "application/json" } 
+            });
+        }
 
-// 2. Questa funzione risponde alle verifiche di sicurezza del browser (metodo OPTIONS)
-export async function onRequestOptions() {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    },
-  });
+        // 3. TUTTO OK: Ritorna il checkout
+        return new Response(JSON.stringify({ checkoutId: data.id }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+        });
+
+    } catch (err) {
+        return new Response(JSON.stringify({ error: "Errore interno del server", details: err.message }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" }
+        });
+    }
 }
