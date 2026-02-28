@@ -233,8 +233,11 @@
                     </div>
                     
                     <div class="alert-box">
-                        <p><strong>⚠️ ORDINI AUTOMATICI:</strong> Il numero WhatsApp riceve solo comande automatizzate, non legge messaggi testuali.</p><br>
-                        <p><strong>🚫 NESSUN ANNULLAMENTO:</strong> Dopo il pagamento (SumUp), l'ordine viene inviato in cucina e non è rimborsabile. Passa a ritirarlo puntuale all'orario scelto.</p>
+                        <p><i class="fa-regular fa-clock" style="color: var(--accent-gold);"></i> <strong>ORARI E QUALITÀ:</strong> Nei momenti di punta, le preparazioni in griglia potrebbero subire un ritardo di 15-20 minuti. Ti chiediamo comunque di <strong>arrivare puntuale</strong> all'orario scelto. <em>Credici, è molto meglio aspettare 10 minuti al locale per goderti un panino o un taglio di carne rovente e appena fatto, piuttosto che farlo raffreddare sul bancone aspettando te! 😉</em><br><span style="font-size: 0.75rem; color: var(--text-muted);">(Non saremo responsabili per prodotti non ottimali a causa di un tuo ritardo nel ritiro).</span></p>
+                        
+                        <hr style="border: 0; border-top: 1px dashed var(--border-light); margin: 15px 0;">
+                        
+                        <p><i class="fa-solid fa-ban" style="color: var(--accent-fire);"></i> <strong>REGOLE ORDINE:</strong> Dopo il pagamento su SumUp, l'ordine va in preparazione in cucina e <u>non è annullabile né rimborsabile</u>. Il numero WhatsApp è un sistema automatico e non riceve chiamate o messaggi.</p>
                     </div>
                     
                     <button class="btn-confirm-order" onclick="sendOrderWithDetails()" id="pay-btn">
@@ -355,7 +358,8 @@
             menuData.forEach(cat => {
                 let html = `<div class="category-section" id="cat-${cat.id}"><h2 class="category-title">${cat.category}</h2>`;
                 cat.items.forEach(item => {
-                    let hideCustomBtn = (cat.id === 'bibite' || cat.id === 'birre-bottiglia' || cat.id === 'contorni' || !item.desc);
+                    // BLOCCO LA PERSONALIZZAZIONE PER BEVANDE, CONTORNI E ORA ANCHE DOLCI
+                    let hideCustomBtn = (cat.id === 'bibite' || cat.id === 'birre-bottiglia' || cat.id === 'contorni' || cat.id === 'dolci' || !item.desc);
                     let customBtn = hideCustomBtn ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen"></i> Rimuovi Ingr.</button>`;
                     
                     html += `
