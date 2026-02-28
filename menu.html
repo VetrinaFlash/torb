@@ -478,11 +478,15 @@
         }
 
         // CHECKOUT SUMUP
-        async function sendOrderWithDetails() {
+       async function sendOrderWithDetails() {
             const name = document.getElementById('cust-name').value.trim();
             const time = document.getElementById('orario-consegna').value;
             const notes = document.getElementById('cust-notes').value.trim();
-            if(!name || !time) return alert("Compila il nome e l'orario.");
+            
+            if(!name || !time) {
+                alert("Compila il nome e l'orario per il ritiro.");
+                return; 
+            }
 
             const orderId = `TRB-${name.substring(0,2).toUpperCase()}-${Math.floor(1000+Math.random()*9000)}`;
             let items=[], tot=0;
@@ -499,35 +503,72 @@
                     txt += `▫️ ${cart[id]}x ${i.name} (${(i.price*cart[id]).toFixed(2)}€)${varTxt}\n`;
                 }
             }
+            
+            if (tot < 1.00) { 
+                alert("Attenzione: L'ordine minimo per SumUp è 1.00 €!"); 
+                return; 
+            }
+
             txt += `\n💰 *PAGATO (SumUp): ${tot.toFixed(2)} €*`;
             localStorage.setItem('torb_order', txt);
 
             const btn = document.getElementById('pay-btn');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Avvio...'; btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connessione a SumUp...'; 
+            btn.disabled = true;
 
             try {
-                // MODIFICA QUI L'URL DEL TUO BACKEND
-                const response = await fetch("/paga", {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                // ⚠️ SE IL TUO WORKER NON È SULLO STESSO DOMINIO, INSERISCI QUI IL LINK COMPLETO:
+                // Esempio: const WORKER_URL = "https://mio-worker.xyz.workers.dev/paga";
+                const WORKER_URL = "/paga"; 
+
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ items: items, orderId: orderId })
                 });
+                
+                if (!response.ok) {
+                    throw new Error(`Errore Server: ${response.status} ${response.statusText}`);
+                }
+
                 const data = await response.json();
                 
                 if (data.checkoutId) { 
                     document.getElementById('dati-cliente-form').style.display = 'none';
                     document.getElementById('sumup-card-container').style.display = 'block';
+                    
                     SumUpCard.mount({
-                        id: 'sumup-card', checkoutId: data.checkoutId,
+                        id: 'sumup-card', 
+                        checkoutId: data.checkoutId,
+                        
+                        // IMPOSTAZIONI AGGIORNATE PER TORB
+                        googlePay: { merchantId: 'INSERISCI_ID_GOOGLE', merchantName: 'TORB Birreria' },
+                        applePay: { merchantName: 'TORB Birreria' },
+
                         onResponse: function(type, body) {
-                            if (type === 'success' && body.status === 'PAID') window.location.href = "successo.html";
-                            else if (type === 'error' || type==='fail' || (type==='success'&&body.status==='FAILED')) { alert("Errore carta."); window.location.href="errore.html"; }
+                            if (type === 'success' && body.status === 'PAID') {
+                                window.location.href = "successo.html";
+                            } 
+                            else if (type === 'success' && body.status === 'FAILED') {
+                                alert("Transazione negata dalla banca. Verifica i fondi e riprova.");
+                                window.location.href = "errore.html";
+                            } 
+                            else if (type === 'error' || type === 'fail' || type === 'declined') {
+                                alert("Errore durante il pagamento: " + (body.message || JSON.stringify(body)));
+                                window.location.href = "errore.html";
+                            }
                         }
                     });
                 } else {
-                    alert("Errore Server: " + JSON.stringify(data));
-                    btn.innerHTML = 'Paga (SumUp)'; btn.disabled = false;
+                    alert("SumUp non ha generato il checkout. Risposta del server: " + JSON.stringify(data));
+                    btn.innerHTML = '<i class="fa-solid fa-credit-card"></i> Paga (SumUp)'; 
+                    btn.disabled = false;
                 }
-            } catch(e) { alert("Errore di rete."); btn.innerHTML = 'Paga (SumUp)'; btn.disabled = false; }
+            } catch(e) { 
+                alert("Errore di rete o Backend non trovato!\nVerifica che il link /paga esista su questo sito.\n\nDettaglio: " + e.message); 
+                btn.innerHTML = '<i class="fa-solid fa-credit-card"></i> Paga (SumUp)'; 
+                btn.disabled = false; 
+            }
         }
 
         window.onload = initApp;

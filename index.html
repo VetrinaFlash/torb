@@ -12,8 +12,8 @@
     <style>
         :root {
             --bg-dark: #0a0a0a; /* Nero profondo */
-            --bg-smoke: #1a1a1a; /* Grigio fumo */
-            --bg-card: #222222; /* Sfondo card */
+            --bg-smoke: #151515; /* Grigio fumo */
+            --bg-card: #1e1e1e; /* Sfondo card */
             --accent-gold: #d4af37; /* Oro Birra */
             --accent-fire: #c84b31; /* Rosso Brace */
             --text-light: #f4f4f4;
@@ -25,24 +25,7 @@
         a { text-decoration: none; }
 
         h1, h2, h3, h4 { font-weight: 900; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px;}
-        .gold-text { color: var(--accent-gold); }
-        .lead { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; font-weight: 500;}
-
-        /* PULSANTE PRINCIPALE */
-        .btn-main {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--accent-gold), #b58b22);
-            color: var(--bg-dark); 
-            padding: 18px 45px; 
-            border-radius: 4px;
-            font-size: 1.1rem; 
-            font-weight: 900; 
-            text-transform: uppercase;
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
-            transition: all 0.3s;
-        }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4); }
-        .btn-main i { margin-right: 10px; font-size: 1.2rem; }
+        .lead { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; font-weight: 500;}
 
         /* NAVBAR */
         .navbar { display: flex; justify-content: flex-end; align-items: center; padding: 25px 30px; position: absolute; width: 100%; top: 0; z-index: 100; }
@@ -51,20 +34,137 @@
 
         /* HERO SECTION */
         .hero {
-            min-height: 95vh; display: grid; grid-template-columns: 1fr; align-items: center; justify-items: center;
-            padding: 100px 20px 40px; position: relative;
-            background: linear-gradient(to bottom, rgba(10,10,10,0.3), var(--bg-dark)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1920&auto=format&fit=crop') center/cover;
+            padding: 120px 20px 100px; position: relative;
+            background: radial-gradient(circle at top, var(--bg-smoke), var(--bg-dark));
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .hero-content { position: relative; z-index: 20; max-width: 800px; animation: fadeIn 1s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero-logo { max-width: 280px; margin-bottom: 20px; filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.8)); }
+        .hero-logo { max-width: 260px; margin-bottom: 25px; filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.8)); }
         .hero h1 { font-size: 2.5rem; margin-bottom: 15px; color: var(--text-light); }
         .hero h1 span { display: block; font-size: 1.2rem; color: var(--accent-gold); margin-bottom: 10px; letter-spacing: 4px;}
 
-        /* SEZIONE INFO */
-        .section { padding: 90px 20px; text-align: center; position: relative; background: var(--bg-smoke); }
+        /* GRIGLIA 4 PULSANTI HERO */
+        .hero-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 650px;
+            margin: 30px auto 0;
+        }
+        @media (min-width: 768px) {
+            .hero-buttons { grid-template-columns: 1fr 1fr; }
+        }
+        
+        .btn-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 20px; 
+            border-radius: 6px;
+            font-size: 0.95rem; 
+            font-weight: 800; 
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            line-height: 1.2;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        /* Bottoni Ordini (Pieni) */
+        .btn-main.primary {
+            background: linear-gradient(45deg, var(--accent-gold), #b58b22);
+            color: var(--bg-dark); 
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+        .btn-main.primary:hover {
+            transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.4);
+        }
+        /* Bottoni Info (Vuoti con bordo) */
+        .btn-main.secondary {
+            background: rgba(10, 10, 10, 0.6);
+            color: var(--accent-gold);
+            border: 2px solid var(--accent-gold);
+            backdrop-filter: blur(5px);
+        }
+        .btn-main.secondary:hover {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            transform: translateY(-3px);
+        }
+
+        /* MODALE SCELTA DELIVERY */
+        .delivery-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); 
+            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .delivery-modal.active { display: flex; opacity: 1; }
+        .delivery-content { 
+            background: var(--bg-card); border: 1px solid var(--accent-gold); 
+            border-radius: 8px; width: 100%; max-width: 400px; position: relative; 
+            padding: 40px 25px 25px; text-align: center;
+            transform: translateY(20px); transition: transform 0.3s ease;
+        }
+        .delivery-modal.active .delivery-content { transform: translateY(0); }
+        .close-delivery { position: absolute; top: 15px; right: 20px; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.2s;}
+        .close-delivery:hover { color: var(--accent-fire); }
+        
+        .btn-delivery-app {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 16px; border-radius: 6px; font-weight: 900; font-size: 1.1rem;
+            text-decoration: none; margin-bottom: 15px; transition: transform 0.3s;
+            text-transform: uppercase; letter-spacing: 1px; width: 100%;
+        }
+        .btn-delivery-app:hover { transform: translateY(-3px); }
+        .glovo { background: #FFC244; color: #00A082; } 
+        .justeat { background: #FF8000; color: #fff; } 
+        .alfonsino { background: #E52A30; color: #fff; margin-bottom: 0;}
+
+        /* SEZIONE VETRINA (LE TUE 3 IMMAGINI) */
+        .showcase {
+            position: relative;
+            z-index: 30;
+            padding: 0 20px;
+            margin-top: 60px; 
+            margin-bottom: 60px;
+        }
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .showcase-item {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            aspect-ratio: 4 / 3; 
+            position: relative;
+            background: var(--bg-card);
+        }
+        .showcase-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .showcase-item:hover img { transform: scale(1.08); }
+
+        /* SEZIONE INFO E MAPPA */
+        .section { padding: 40px 20px 90px; text-align: center; position: relative; background: var(--bg-smoke); }
         .section-title { font-size: 2.2rem; margin-bottom: 50px; position: relative; display: inline-block; color: var(--text-light); }
         .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--accent-gold); }
 
@@ -79,18 +179,11 @@
         .map-link { color: var(--text-light); text-decoration: none; transition: color 0.3s ease; border-bottom: 1px dashed var(--accent-gold); padding-bottom: 2px;}
         .map-link:hover { color: var(--accent-gold); }
 
-        /* AVVISO */
         .alert-box-info { background: rgba(200, 75, 49, 0.1); border: 1px dashed var(--accent-fire); padding: 15px; border-radius: 4px; margin-top: 20px; font-size: 0.9rem; color: #ff8a65; line-height: 1.5; }
 
-        /* MAPPA CENTRATA E CONTENUTA */
         .map-wrapper { 
-            width: 100%; 
-            max-width: 1000px; /* Stessa larghezza massima della griglia delle card */
-            margin: 40px auto 0; /* Auto per centrarla orizzontalmente */
-            border-radius: 8px; 
-            overflow: hidden; 
-            border: 1px solid rgba(212, 175, 55, 0.2); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%; max-width: 1000px; margin: 40px auto 0; border-radius: 8px; 
+            overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         /* FOOTER */
@@ -101,8 +194,10 @@
         .social-link:hover { background: var(--accent-gold); color: var(--bg-dark); }
 
         @media (min-width: 768px) {
+            .hero { padding: 150px 20px 60px; }
             .hero h1 { font-size: 4rem; }
             .hero h1 span { font-size: 1.5rem; }
+            .showcase-grid { grid-template-columns: repeat(3, 1fr); margin-top: 20px; }
             .info-grid { grid-template-columns: 1fr 1fr; }
             .map-wrapper iframe { height: 400px; }
         }
@@ -111,16 +206,53 @@
 <body>
 
     <nav class="navbar">
-        <a href="menu.html" class="nav-cta"><i class="fa-solid fa-utensils"></i> Ordina Ora</a>
+        <a href="menu.html" class="nav-cta"><i class="fa-solid fa-utensils"></i> Il nostro Menù</a>
     </nav>
 
     <section class="hero">
         <div class="hero-content">
             <img src="images/logo.png" alt="TORB" class="hero-logo" onerror="this.style.display='none';">
             <h1><span>The Smoked Beer</span> Birreria Carnivora</h1>
-            <p class="lead">Selezione di carni pregiate, hamburger gourmet e birre affumicate. Vivi l'esperienza TORB direttamente a casa tua.</p>
-            <br>
-            <a href="menu.html" class="btn-main"><i class="fa-solid fa-fire-burner"></i> Scopri il Menù</a>
+            <p class="lead">Selezione di carni pregiate, hamburger gourmet e birre affumicate. Vivi l'esperienza TORB come preferisci.</p>
+            
+            <div class="hero-buttons">
+                <a href="menu.html" class="btn-main primary"><i class="fa-solid fa-bag-shopping"></i> Ordina e Ritira</a>
+                <button onclick="openDeliveryModal()" class="btn-main primary"><i class="fa-solid fa-motorcycle"></i> Ordina a Domicilio</button>
+                <a href="https://67ape8dslvci9fpzpmngl8dwcekglxg0.forms.pienissimo.pro/info-client" target="_blank" class="btn-main secondary"><i class="fa-solid fa-calendar-check"></i> Prenota un Tavolo</a>
+                <a href="https://www.canva.com/design/DAG8uHDpDcU/vTe9SxgQiyRPKDhWvruCZQ/view?utm_content=DAG8uHDpDcU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h6839325f60" target="_blank" class="btn-main secondary"><i class="fa-solid fa-book-open"></i> Guarda il Menù</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="delivery-modal" id="delivery-modal" onclick="if(event.target === this) closeDeliveryModal()">
+        <div class="delivery-content">
+            <i class="fa-solid fa-xmark close-delivery" onclick="closeDeliveryModal()"></i>
+            <h3 style="color: var(--accent-gold); font-size: 1.4rem; margin-bottom: 10px;">Scegli il Delivery</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px;">Seleziona la tua app preferita per ricevere TORB direttamente a casa tua.</p>
+            
+            <a href="https://glovoapp.com/it/it/caserta/stores/torb-birreria-carnivora-qtc" target="_blank" class="btn-delivery-app glovo">
+                Ordina con Glovo
+            </a>
+            <a href="https://www.justeat.it/restaurants-torb-birreria-carnivora-caserta/menu" target="_blank" class="btn-delivery-app justeat">
+                Ordina con Just Eat
+            </a>
+            <a href="https://alfonsino.delivery/it/caserta/torb-birreria-carnivora" target="_blank" class="btn-delivery-app alfonsino">
+                Ordina con Alfonsino
+            </a>
+        </div>
+    </div>
+
+    <section class="showcase">
+        <div class="showcase-grid">
+            <div class="showcase-item">
+                <img src="images/home1.jpg" alt="Specialità TORB 1" onerror="this.src='https://placehold.co/600x800/1a1a1a/d4af37?text=Foto+1'">
+            </div>
+            <div class="showcase-item">
+                <img src="images/home2.jpg" alt="Specialità TORB 2" onerror="this.src='https://placehold.co/600x800/1a1a1a/d4af37?text=Foto+2'">
+            </div>
+            <div class="showcase-item">
+                <img src="images/home3.jpg" alt="Specialità TORB 3" onerror="this.src='https://placehold.co/600x800/1a1a1a/d4af37?text=Foto+3'">
+            </div>
         </div>
     </section>
 
@@ -153,9 +285,6 @@
                 <p>Hai richieste particolari o domande sulle nostre carni?</p>
                 <p style="margin-top: 10px;"><strong>Scrivici in Direct!</strong></p>
                 
-                <div class="alert-box-info">
-                    <strong>⚠️ Info Ordini:</strong> Il sistema automatizzato WhatsApp non riceve chiamate. Ordina tramite il sito per garantire la preparazione.
-                </div>
             </div>
         </div>
 
@@ -184,5 +313,24 @@
             © 2024 TORB Birreria Carnivora. Tutti i diritti riservati.<br>Corso Trieste 20, Caserta.
         </p>
     </footer>
+
+    <script>
+        // Funzioni per aprire e chiudere il modale del Delivery fluidamente
+        function openDeliveryModal() {
+            const modal = document.getElementById('delivery-modal');
+            modal.style.display = 'flex';
+            // Forza il ricalcolo per attivare l'animazione CSS
+            void modal.offsetWidth; 
+            modal.classList.add('active');
+        }
+
+        function closeDeliveryModal() {
+            const modal = document.getElementById('delivery-modal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300); // Attende la fine dell'animazione CSS
+        }
+    </script>
 </body>
 </html>
