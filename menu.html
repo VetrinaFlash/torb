@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TORB - Menù Asporto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"></script>
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-smoke: #151515;
+            --bg-card: #1e1e1e;
+            --accent-gold: #d4af37; 
+            --accent-fire: #c84b31;
+            --text-light: #f4f4f4;
+            --text-muted: #888888;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-smoke); color: var(--text-light); padding-bottom: 120px; min-height: 100vh; }
+
+        /* HEADER */
+        header { text-align: center; padding: 30px 20px 40px; background: var(--bg-dark); border-bottom: 1px solid rgba(212,175,55,0.2); }
+        .hero-title-main { color: var(--text-light); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; line-height: 1.1; margin-bottom: 5px; letter-spacing: 2px;}
+        .hero-subtitle-brand { display: block; color: var(--text-muted); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 20px; }
+        .hero-subtitle-action { color: var(--accent-gold); font-size: 1.3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* FILTRI & MENU */
+        .filters-container { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; position: sticky; top: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid rgba(212,175,55,0.1); }
+        .filters-container::-webkit-scrollbar { display: none; }
+        .filter-btn { background: var(--bg-card); color: var(--text-light); border: 1px solid rgba(212,175,55,0.3); padding: 8px 18px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; white-space: nowrap; cursor: pointer; text-transform: uppercase; transition: all 0.3s; }
+        .filter-btn.active { background: var(--accent-gold); color: var(--bg-dark); border-color: var(--accent-gold); }
+        
+        .menu-container { padding: 0 15px; max-width: 1000px; margin: 0 auto;}
+        .category-section { display: block; animation: fadeIn 0.4s ease-in-out; }
+        .category-section.hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .category-title { padding: 40px 5px 15px; font-size: 1.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; border-bottom: 1px dashed rgba(212,175,55,0.3); margin-bottom: 15px; }
+        
+        .menu-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; margin: 15px 0; display: flex; flex-direction: column; }
+        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .item-name { font-size: 1.1rem; font-weight: 700; color: var(--text-light); line-height: 1.3; padding-right: 10px; text-transform: uppercase;}
+        .item-price { font-size: 1.2rem; font-weight: 700; color: var(--accent-gold); white-space: nowrap; }
+        .item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; flex-grow: 1;}
+        
+        .controls { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .qty-box { display: flex; align-items: center; gap: 15px; }
+        
+        .btn-control { background: var(--bg-smoke); color: var(--accent-gold); border: 1px solid var(--accent-gold); border-radius: 4px; width: 32px; height: 32px; font-size: 1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .qty { font-weight: 700; font-size: 1.2rem; min-width: 25px; text-align: center; }
+
+        .btn-custom { background: transparent; color: var(--text-muted); border: 1px solid var(--text-muted); border-radius: 4px; padding: 6px 12px; font-size: 0.75rem; font-weight: 600; cursor: pointer; text-transform: uppercase; }
+        
+        .variant-item { background: var(--bg-smoke); padding: 12px; border-radius: 4px; margin-top: 12px; border-left: 3px solid var(--accent-fire); border: 1px solid rgba(255,255,255,0.05);}
+        .variant-desc { font-size: 0.8rem; color: var(--accent-fire); margin-bottom: 5px; line-height: 1.4;}
+        .variant-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; font-weight: 700; margin-bottom: 5px;}
+
+        /* MODALI */
+        .checkout-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px; }
+        .checkout-modal.active { display: flex; }
+        .checkout-content { background: var(--bg-card); border: 1px solid var(--accent-gold); border-radius: 8px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; }
+        
+        .modal-header { padding: 20px; background: var(--bg-dark); border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10;}
+        .modal-header h3 { color: var(--accent-gold); margin: 0; font-size: 1.2rem; }
+        .close-modal { color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+        .modal-body { padding: 20px; }
+
+        .custom-option-card { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; background: var(--bg-smoke); padding: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; cursor: pointer;}
+        .custom-option-left input { margin-right: 15px; accent-color: var(--accent-fire); transform: scale(1.2); }
+
+        .recap-list { background: var(--bg-smoke); border-radius: 8px; padding: 15px; max-height: 250px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.05);}
+        .recap-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px;}
+        .recap-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .btn-remove-recap { background: transparent; color: var(--text-muted); border: 1px solid var(--text-muted); border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
+        .btn-remove-recap:hover { color: var(--accent-fire); border-color: var(--accent-fire); }
+
+        /* UPSELL (CONSIGLI) */
+        .upsell-container { 
+            display: grid; 
+            grid-template-columns: 1fr; /* 1 colonna su mobile */
+            gap: 12px; 
+            padding-bottom: 10px; 
+            margin-top: 15px;
+        }
+        .upsell-card { 
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(0,0,0,0)); 
+            border: 1px solid rgba(212,175,55,0.2); 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .upsell-card h4 { font-size: 0.95rem; margin-bottom: 8px; text-transform: uppercase; color: var(--text-light);}
+        .btn-upsell { 
+            background: transparent; 
+            color: var(--accent-gold); 
+            border: 1px solid var(--accent-gold); 
+            padding: 10px; 
+            border-radius: 4px; 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            width: 100%; 
+            text-transform: uppercase; 
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-upsell:hover { background: var(--accent-gold); color: var(--bg-dark); }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: var(--text-muted); text-transform: uppercase;}
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border-radius: 4px; background: var(--bg-smoke); border: 1px solid rgba(255,255,255,0.1); color: var(--text-light); outline: none; font-family: inherit;}
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent-gold); }
+
+        .btn-confirm-order { width: 100%; background: var(--accent-gold); color: var(--bg-dark); border: none; padding: 15px; border-radius: 4px; font-size: 1rem; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; justify-content: center; gap: 10px; transition: background 0.3s; }
+        .btn-confirm-order:hover { background: #b58b22; }
+        .btn-confirm-order:disabled { opacity: 0.7; cursor: not-allowed; }
+        
+        .alert-box { background: rgba(200, 75, 49, 0.1); border: 1px dashed var(--accent-fire); padding: 15px; border-radius: 4px; margin-bottom: 20px; font-size: 0.8rem; color: #ff8a65; }
+
+        .cart-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-dark); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--accent-gold); transform: translateY(120%); transition: transform 0.3s ease; z-index: 1000; }
+        .cart-footer.visible { transform: translateY(0); }
+        .cart-total { font-size: 1.3rem; font-weight: 900; color: var(--accent-gold); }
+        .btn-checkout { background: var(--accent-gold); color: var(--bg-dark); border: none; padding: 12px 25px; border-radius: 4px; font-weight: 800; text-transform: uppercase; cursor: pointer;}
+
+        @media (min-width: 768px) {
+            .filters-container { justify-content: center; }
+            .category-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .category-title { grid-column: span 2; }
+            .menu-item { margin: 0; }
+            
+            /* Su PC mostriamo i consigli affiancati a 3 colonne */
+            .upsell-container { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="hero-title-main">TORB</h1>
+        <span class="hero-subtitle-brand">The Smoked Beer</span>
+        <h2 class="hero-subtitle-action">Ordina qui e ritira in sede</h2>
+    </header>
+
+    <div class="filters-container" id="filters-container"></div>
+    <div id="menu-container" class="menu-container"></div>
+
+    <div class="cart-footer" id="cart-footer">
+        <div class="cart-total"><span style="display:block; font-size: 0.7rem; color: #aaa;">Totale Ordine</span><div id="total-price">0,00 €</div></div>
+        <button class="btn-checkout" onclick="openRecap()">Procedi <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <div class="checkout-modal" id="custom-modal" onclick="if(event.target === this) closeCustomModal()">
+        <div class="checkout-content">
+            <div class="modal-header">
+                <h3 id="custom-title">Personalizza</h3>
+                <i class="fa-solid fa-xmark close-modal" onclick="closeCustomModal()"></i>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Seleziona gli ingredienti da rimuovere.</p>
+                <div id="custom-dynamic-sections"></div>
+            </div>
+            <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <button class="btn-confirm-order" onclick="addCustomItemToCart()">Conferma</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="checkout-modal" id="recap-modal" onclick="if(event.target === this) closeRecap()">
+        <div class="checkout-content">
+            <div class="modal-header">
+                <h3>Il tuo Ordine</h3>
+                <i class="fa-solid fa-xmark close-modal" onclick="closeRecap()"></i>
+            </div>
+            <div class="modal-body">
+                <div class="recap-list" id="recap-list-container"></div>
+                
+                <h4 style="color: var(--accent-gold); margin-top: 25px; font-size: 1rem;">Completa l'ordine</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Aggiungi al volo i nostri preferiti:</p>
+                <div class="upsell-container" id="upsell-container"></div>
+            </div>
+            <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <button class="btn-confirm-order" onclick="proceedToCheckout()">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="checkout-modal" id="checkout-modal" onclick="if(event.target === this) closeCheckout()">
+        <div class="checkout-content">
+            <div class="modal-header">
+                <h3>Dati Ritiro</h3>
+                <i class="fa-solid fa-xmark close-modal" onclick="closeCheckout()"></i>
+            </div>
+            <div class="modal-body">
+                <div id="sumup-card-container" style="display: none; background: white; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                    <div id="sumup-card"></div>
+                </div>
+
+                <div id="dati-cliente-form">
+                    <div class="form-group">
+                        <label>Nome e Cognome *</label>
+                        <input type="text" id="cust-name" required placeholder="Inserisci nome">
+                    </div>
+                    <div class="form-group">
+                        <label>Orario Ritiro (Locale) *</label>
+                        <select id="orario-consegna" name="orario" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Note Cucina / Cotture</label>
+                        <textarea id="cust-notes" rows="2" placeholder="Es. Hamburger ben cotto..."></textarea>
+                    </div>
+                    
+                    <button class="btn-confirm-order" onclick="sendOrderWithDetails()" id="pay-btn">
+                        <i class="fa-solid fa-credit-card"></i> Paga (SumUp)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MENU ESTRATTO DAL PDF TORB
+        const menuData = [
+            {
+                id: "antipasti", category: "Antipasti",
+                items: [
+                    { id: 101, name: "Patate fritte", desc: "", price: 4.50 },
+                    { id: 102, name: "Patate fritte, salsiccia e fonduta", desc: "", price: 6.50 },
+                    { id: 103, name: "Patate fritte e würstel", desc: "", price: 5.50 },
+                    { id: 104, name: "Pollo crispy", desc: "", price: 10.00 },
+                    { id: 105, name: "Polpette di Pulled Pork", desc: "panate con mandorle", price: 9.50 },
+                    { id: 106, name: "Polpette di Black Angus", desc: "con fonduta di parmigiano", price: 10.00 },
+                    { id: 107, name: "Ali di pollo Cornflakes", desc: "", price: 9.50 }
+                ]
+            },
+            {
+                id: "panini", category: "Panini",
+                items: [
+                    { id: 201, name: "Chicken", desc: "Pollo panato Cornflakes, provola, insalata, mayo", price: 11.00 },
+                    { id: 202, name: "Burger Torb", desc: "Hamburger 180gr, insalata, pomodoro, cheddar, bacon, cipolla croccante, salsa Torb", price: 12.00 },
+                    { id: 203, name: "Pulled Pork", desc: "Pulled Pork, chutney di peperoni, mayo al fondo bruno, patate al forno, tarallo", price: 11.00 },
+                    { id: 204, name: "La Tradizione", desc: "Hamburger di salsiccia, provola, friarielli, mandorle tostate", price: 10.00 }
+                ]
+            },
+            {
+                id: "carne", category: "La Carne",
+                items: [
+                    { id: 301, name: "Filetto bruno e patate", desc: "Filetto 250gr, fondo bruno e patate in tripla cottura", price: 32.00 },
+                    { id: 302, name: "Filetto con contorno", desc: "Filetto 250gr con 1 contorno a scelta", price: 30.00 },
+                    { id: 303, name: "Tagliata con contorno", desc: "Tagliata 300gr con 1 contorno a scelta", price: 30.00 },
+                    { id: 304, name: "Salsiccia e friarielli", desc: "Salsiccia di maiale con finocchietto e friarielli", price: 18.00 },
+                    { id: 305, name: "Petto di pollo grigliato", desc: "Petto di pollo grigliato con 1 contorno a scelta", price: 15.00 },
+                    { id: 306, name: "Hamburger al piatto", desc: "Hamburger 180gr al piatto con 1 contorno a scelta", price: 12.00 }
+                ]
+            },
+            {
+                id: "contorni", category: "Contorni",
+                items: [
+                    { id: 401, name: "Patate fritte", desc: "", price: 4.50 },
+                    { id: 402, name: "Patate al forno", desc: "", price: 5.00 },
+                    { id: 403, name: "Friarielli", desc: "", price: 6.00 },
+                    { id: 404, name: "Insalata verde", desc: "", price: 4.00 },
+                    { id: 405, name: "Rucola e pomodorini", desc: "", price: 5.00 }
+                ]
+            },
+            {
+                id: "dolci", category: "Dolci (Anima Dolce)",
+                items: [
+                    { id: 501, name: "Pastiera", desc: "La versione scomposta della pastiera, con crumble al burro, ricotta e grano", price: 7.00 },
+                    { id: 502, name: "Cheesecake ai Frutti Rossi", desc: "Crumble al burro, crema al formaggio, composta ai frutti rossi", price: 7.00 },
+                    { id: 503, name: "Birramisù", desc: "Mousse al mascarpone, crema alla birra, crumble al burro", price: 7.00 },
+                    { id: 504, name: "Tiramisu", desc: "Savoiardo bagnato al caffè, cuore di cioccolato al caramello, mousse al mascarpone", price: 7.00 },
+                    { id: 505, name: "Delizia al limone", desc: "Pan di spagna al limoncello, crema chantilly al limone", price: 7.00 }
+                ]
+            },
+            {
+                id: "bibite", category: "Bibite",
+                items: [
+                    { id: 601, name: "Acqua Ferrarelle", desc: "", price: 3.00 },
+                    { id: 602, name: "Acqua Electa", desc: "", price: 3.00 },
+                    { id: 603, name: "Coca cola", desc: "", price: 3.00 },
+                    { id: 604, name: "Coca cola zero", desc: "", price: 3.00 },
+                    { id: 605, name: "Fanta", desc: "", price: 3.00 }
+                ]
+            }
+        ];
+
+        let cart = {}; let itemMap = {}; let currentCustomItemId = null;
+
+        function buildItemMap() {
+            menuData.forEach(cat => cat.items.forEach(i => { i.categoryId = cat.id; itemMap[i.id] = i; }));
+        }
+
+        function initApp() { buildItemMap(); renderFilters(); renderMenu(); }
+
+        function renderFilters() {
+            const fc = document.getElementById('filters-container');
+            fc.innerHTML = `<button class="filter-btn active" onclick="filterMenu('all', this)">Tutti</button>`;
+            menuData.forEach(cat => {
+                fc.innerHTML += `<button class="filter-btn" onclick="filterMenu('${cat.id}', this)">${cat.category}</button>`;
+            });
+        }
+
+        function filterMenu(catId, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.category-section').forEach(sec => {
+                if (catId === 'all' || sec.id === `cat-${catId}`) sec.classList.remove('hidden'); else sec.classList.add('hidden');
+            });
+            window.scrollTo({ top: document.getElementById('filters-container').offsetTop - 10, behavior: 'smooth' });
+        }
+
+        function renderMenu() {
+            const container = document.getElementById('menu-container');
+            menuData.forEach(cat => {
+                let html = `<div class="category-section" id="cat-${cat.id}"><h2 class="category-title">${cat.category}</h2>`;
+                cat.items.forEach(item => {
+                    let customBtn = (cat.id === 'bibite' || cat.id === 'contorni' || !item.desc) ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen"></i> Rimuovi Ingr.</button>`;
+                    html += `
+                        <div class="menu-item">
+                            <div class="item-header">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-price">${item.price.toFixed(2).replace('.',',')}€</div>
+                            </div>
+                            <p class="item-desc">${item.desc}</p>
+                            <div class="controls">
+                                ${customBtn}
+                                <div style="flex-grow:1;"></div>
+                                <div class="qty-box">
+                                    <button class="btn-control" onclick="handleRemoveClick('${item.id}')"><i class="fa-solid fa-minus"></i></button>
+                                    <span class="qty" id="qty-${item.id}">0</span>
+                                    <button class="btn-control" onclick="handleAddClick('${item.id}')"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div id="variants-${item.id}"></div>
+                        </div>`;
+                });
+                html += `</div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        // CARRELLO
+        function handleAddClick(id) { updateQty(id, 1); }
+        function handleRemoveClick(id) {
+            let baseCount = cart[id] || 0;
+            let variants = Object.keys(cart).filter(k => k.startsWith('c_' + id + '_') && cart[k] > 0);
+            if (variants.length === 1 && baseCount === 0) updateQty(variants[0], -1);
+            else if (variants.length > 0 || baseCount > 0) {
+                if (variants.length === 0) updateQty(id, -1);
+                else alert("Rimuovi le varianti usando i tasti delle singole voci.");
+            }
+        }
+
+        function updateQty(id, change) {
+            cart[id] = (cart[id] || 0) + change;
+            if (cart[id] < 0) cart[id] = 0;
+            
+            if (itemMap[id] && itemMap[id].isCustom) {
+                document.getElementById(`variant-${id}`).style.display = cart[id] > 0 ? 'block' : 'none';
+                document.getElementById(`qty-${id}`).innerText = cart[id];
+                updateBaseQty(itemMap[id].baseId);
+            } else {
+                document.getElementById(`qty-${id}`).innerText = cart[id];
+                updateBaseQty(id);
+            }
+            updateCartUI();
+        }
+
+        function updateBaseQty(baseId) {
+            let total = cart[baseId] || 0;
+            for(let id in cart) if(cart[id] > 0 && itemMap[id]?.isCustom && itemMap[id].baseId == baseId) total += cart[id];
+            document.getElementById(`qty-${baseId}`).innerText = total;
+        }
+
+        function updateCartUI() {
+            let total = 0, count = 0;
+            for(let id in cart) {
+                if (cart[id] > 0 && itemMap[id]) { total += itemMap[id].price * cart[id]; count += cart[id]; }
+            }
+            document.getElementById('total-price').innerText = total.toFixed(2).replace('.',',') + ' €';
+            const f = document.getElementById('cart-footer');
+            count > 0 ? f.classList.add('visible') : f.classList.remove('visible');
+        }
+
+        // MODALE RIMOZIONE
+        function openCustomModal(id) {
+            currentCustomItemId = id;
+            const item = itemMap[id];
+            document.getElementById('custom-title').innerText = item.name;
+            let html = '';
+            if(item.desc) {
+                let parts = item.desc.split(/ e |,| con /i).map(s => s.trim()).filter(s => s.length > 2);
+                parts.forEach(ing => {
+                    html += `<label class="custom-option-card"><div class="custom-option-left"><input type="checkbox" value="${ing}" class="rm-chk"> Senza ${ing}</div></label>`;
+                });
+            }
+            document.getElementById('custom-dynamic-sections').innerHTML = html || "<p>Nessun ingrediente modificabile.</p>";
+            document.getElementById('custom-modal').classList.add('active');
+        }
+        function closeCustomModal() { document.getElementById('custom-modal').classList.remove('active'); currentCustomItemId = null; }
+        
+        function addCustomItemToCart() {
+            if(!currentCustomItemId) return;
+            const item = itemMap[currentCustomItemId];
+            let rems = Array.from(document.querySelectorAll('.rm-chk:checked')).map(c => c.value);
+            if(rems.length === 0) { updateQty(item.id, 1); closeCustomModal(); return; }
+            
+            let sig = `${item.id}|${rems.sort().join('-')}`;
+            let hash = Math.abs(sig.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0));
+            let cId = "c_" + item.id + "_" + hash;
+
+            if(!itemMap[cId]) {
+                itemMap[cId] = { id: cId, baseId: item.id, name: item.name, price: item.price, isCustom: true, removed: rems };
+                let h = `<div class="variant-item" id="variant-${cId}">
+                    <div class="variant-header"><span>Variante Custom</span>
+                        <div style="display:flex;gap:10px;"><button class="btn-control" onclick="updateQty('${cId}',-1)">-</button><span class="qty" id="qty-${cId}">0</span><button class="btn-control" onclick="updateQty('${cId}',1)">+</button></div>
+                    </div>
+                    <div class="variant-desc">- Senza ${rems.join(', ')}</div></div>`;
+                document.getElementById(`variants-${item.id}`).insertAdjacentHTML('beforeend', h);
+            }
+            updateQty(cId, 1); closeCustomModal();
+        }
+
+        // RECAP & UPSELL
+        function removeFromRecap(id) { if(cart[id]>0){ updateQty(id, -cart[id]); openRecap(); } }
+        function openRecap() {
+            const rc = document.getElementById('recap-list-container'); rc.innerHTML = '';
+            let totItems = 0;
+            for(let id in cart) {
+                if(cart[id]>0 && itemMap[id]) {
+                    totItems++;
+                    let i = itemMap[id];
+                    let txt = i.isCustom ? `<br><small style="color:var(--accent-fire)">Senza ${i.removed.join(', ')}</small>` : '';
+                    rc.innerHTML += `<div class="recap-item"><div><strong>${cart[id]}x</strong> ${i.name} ${txt}</div><div style="display:flex;gap:15px;align-items:center;"><span>${(i.price*cart[id]).toFixed(2)}€</span><button class="btn-remove-recap" onclick="removeFromRecap('${id}')"><i class="fa-solid fa-xmark"></i></button></div></div>`;
+                }
+            }
+            if(totItems===0) { closeRecap(); return; }
+
+            const uc = document.getElementById('upsell-container'); uc.innerHTML = '';
+            let inCart = Object.keys(cart).filter(k=>cart[k]>0).map(k=>itemMap[k]?.baseId || itemMap[k]?.id);
+            let hasDrink = inCart.some(id => itemMap[id]?.categoryId === 'bibite');
+            let available = []; menuData.forEach(c=>c.items.forEach(i=> { if(!inCart.includes(i.id)) available.push(i); }));
+            
+            let upsells = [];
+            if(!hasDrink) {
+                let dr = available.filter(i=>i.categoryId==='bibite').sort(()=>0.5-Math.random());
+                if(dr.length) upsells.push(dr[0]);
+            }
+            let food = available.filter(i=>i.categoryId!=='bibite' && !upsells.includes(i)).sort(()=>0.5-Math.random());
+            while(upsells.length < 3 && food.length > 0) upsells.push(food.pop());
+
+            upsells.forEach(u => {
+                uc.innerHTML += `<div class="upsell-card"><h4>${u.name}</h4><p style="color:var(--accent-gold);font-weight:bold;">${u.price.toFixed(2)}€</p><button class="btn-upsell" onclick="updateQty(${u.id},1); openRecap();">+ Aggiungi</button></div>`;
+            });
+            document.getElementById('recap-modal').classList.add('active');
+        }
+        function closeRecap() { document.getElementById('recap-modal').classList.remove('active'); }
+        function proceedToCheckout() { closeRecap(); popolaOrari(); document.getElementById('checkout-modal').classList.add('active'); }
+        function closeCheckout() { document.getElementById('checkout-modal').classList.remove('active'); }
+
+        // ORARI (Ogni 15 min)
+        function popolaOrari() {
+            const sel = document.getElementById('orario-consegna'); sel.innerHTML = '';
+            let d = new Date(); d.setMinutes(d.getMinutes() + 15);
+            let h = d.getHours(), m = d.getMinutes(), r = m%15;
+            if(r!==0) m += (15-r); if(m>=60) { m-=60; h++; }
+            for(let i=0; i<12; i++) {
+                if(h>23) break;
+                sel.innerHTML += `<option value="${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}">${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}</option>`;
+                m+=15; if(m>=60) { m-=60; h++; }
+            }
+        }
+
+        // CHECKOUT SUMUP
+        async function sendOrderWithDetails() {
+            const name = document.getElementById('cust-name').value.trim();
+            const time = document.getElementById('orario-consegna').value;
+            const notes = document.getElementById('cust-notes').value.trim();
+            if(!name || !time) return alert("Compila il nome e l'orario.");
+
+            const orderId = `TRB-${name.substring(0,2).toUpperCase()}-${Math.floor(1000+Math.random()*9000)}`;
+            let items=[], tot=0;
+            let txt = `*NUOVO ORDINE TORB* 🥩\n🆔 Rif: ${orderId}\n👤 Cliente: ${name}\n🕒 Ritiro: ${time}\n`;
+            if(notes) txt += `📝 Note: ${notes}\n`;
+            txt += `\n*ORDINE:*\n`;
+
+            for(let id in cart) {
+                if(cart[id]>0 && itemMap[id]) {
+                    let i = itemMap[id];
+                    items.push({ name: i.name, price: i.price, qty: cart[id] });
+                    tot += i.price*cart[id];
+                    let varTxt = i.isCustom ? `\n   ↳ Senza: ${i.removed.join(', ')}` : '';
+                    txt += `▫️ ${cart[id]}x ${i.name} (${(i.price*cart[id]).toFixed(2)}€)${varTxt}\n`;
+                }
+            }
+            txt += `\n💰 *PAGATO (SumUp): ${tot.toFixed(2)} €*`;
+            localStorage.setItem('torb_order', txt);
+
+            const btn = document.getElementById('pay-btn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Avvio...'; btn.disabled = true;
+
+            try {
+                // MODIFICA QUI L'URL DEL TUO BACKEND
+                const response = await fetch("/paga", {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: items, orderId: orderId })
+                });
+                const data = await response.json();
+                
+                if (data.checkoutId) { 
+                    document.getElementById('dati-cliente-form').style.display = 'none';
+                    document.getElementById('sumup-card-container').style.display = 'block';
+                    SumUpCard.mount({
+                        id: 'sumup-card', checkoutId: data.checkoutId,
+                        onResponse: function(type, body) {
+                            if (type === 'success' && body.status === 'PAID') window.location.href = "successo.html";
+                            else if (type === 'error' || type==='fail' || (type==='success'&&body.status==='FAILED')) { alert("Errore carta."); window.location.href="errore.html"; }
+                        }
+                    });
+                } else {
+                    alert("Errore Server: " + JSON.stringify(data));
+                    btn.innerHTML = 'Paga (SumUp)'; btn.disabled = false;
+                }
+            } catch(e) { alert("Errore di rete."); btn.innerHTML = 'Paga (SumUp)'; btn.disabled = false; }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
