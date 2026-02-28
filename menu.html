@@ -548,9 +548,6 @@
                     body: JSON.stringify({ items: items, orderId: orderId })
                 });
                 
-                if (!response.ok) {
-                    throw new Error(`Errore Server: ${response.status} ${response.statusText}`);
-                }
 
                 const data = await response.json();
                 
