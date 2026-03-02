@@ -36,6 +36,22 @@
             text-transform: uppercase;
         }
 
+        /* BANNER LOCALE CHIUSO */
+        #store-closed-banner {
+            display: none; 
+            background: #b71c1c; 
+            color: #fff; 
+            text-align: center; 
+            padding: 10px 15px; 
+            font-weight: 800; 
+            font-size: 0.85rem; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            z-index: 200; 
+            position: relative; 
+            box-shadow: 0 4px 10px rgba(183, 28, 28, 0.4);
+        }
+
         /* PROMO ALERTS NEL CARRELLO */
         .promo-alert {
             background: rgba(184, 134, 11, 0.1);
@@ -149,6 +165,10 @@
 
     <div class="promo-bar">
         🔥 SCONTO 10% SUGLI ORDINI SOPRA I 20€ | SCONTO 20% SOPRA I 50€ 🔥
+    </div>
+
+    <div id="store-closed-banner">
+        ⚠️ IL LOCALE È ATTUALMENTE CHIUSO. NON È POSSIBILE ORDINARE. ⚠️
     </div>
 
     <header>
@@ -330,11 +350,98 @@
 
         let cart = {}; let itemMap = {}; let currentCustomItemId = null;
 
+        // CALCOLO ORARI E GESTIONE CHIUSURA LOCALE TORB
+        function getAvailableSlots() {
+            let slots = [];
+            let now = new Date();
+            now.setMinutes(now.getMinutes() + 15);
+            
+            let actualDay = now.getDay();
+            let actualHour = now.getHours();
+            let actualMin = now.getMinutes();
+
+            // La notte fa parte del giorno logico precedente
+            let logicalDay = actualDay;
+            let calcHour = actualHour;
+            if (actualHour < 5) {
+                logicalDay = actualDay === 0 ? 6 : actualDay - 1;
+                calcHour += 24; 
+            }
+
+            // Orari apertura TORB (Lunedì Chiuso, Mar-Gio/Dom fino 1:00, Ven-Sab fino 2:30)
+            const schedule = {
+                1: null, // Lunedì Chiuso
+                2: { open: 19 * 60, close: 25 * 60 }, // Mar 19:00 - 01:00
+                3: { open: 19 * 60, close: 25 * 60 }, // Mer 19:00 - 01:00
+                4: { open: 19 * 60, close: 25 * 60 }, // Gio 19:00 - 01:00
+                5: { open: 19 * 60, close: 26 * 60 + 30 }, // Ven 19:00 - 02:30
+                6: { open: 19 * 60, close: 26 * 60 + 30 }, // Sab 19:00 - 02:30
+                0: { open: 19 * 60, close: 25 * 60 }  // Dom 19:00 - 01:00
+            };
+
+            let todaySchedule = schedule[logicalDay];
+            let currentMins = calcHour * 60 + actualMin;
+
+            if (todaySchedule) {
+                let firstAvailable = currentMins;
+                let remainder = firstAvailable % 15;
+                if (remainder !== 0) {
+                    firstAvailable += (15 - remainder);
+                }
+
+                let startMins = Math.max(firstAvailable, todaySchedule.open);
+
+                for (let t = startMins; t <= todaySchedule.close; t += 15) {
+                    let displayH = Math.floor(t / 60) % 24;
+                    let displayM = t % 60;
+                    
+                    let hh = String(displayH).padStart(2, '0');
+                    let mm = String(displayM).padStart(2, '0');
+                    
+                    slots.push(`${hh}:${mm}`);
+                }
+            }
+            return slots;
+        }
+
+        // CONTROLLA SE IL NEGOZIO E' APERTO
+        function checkStoreStatus() {
+            let slots = getAvailableSlots();
+            const btnCheckout = document.querySelector('.btn-checkout');
+            const storeClosedBanner = document.getElementById('store-closed-banner');
+            
+            if(slots.length === 0) {
+                if(storeClosedBanner) storeClosedBanner.style.display = 'block';
+                if(btnCheckout) {
+                    btnCheckout.innerHTML = '<i class="fa-solid fa-store-slash"></i> Chiuso';
+                    btnCheckout.style.background = '#888888'; 
+                    btnCheckout.style.boxShadow = 'none';
+                    btnCheckout.style.pointerEvents = 'none'; 
+                }
+            } else {
+                if(storeClosedBanner) storeClosedBanner.style.display = 'none';
+                if(btnCheckout) {
+                    btnCheckout.innerHTML = 'Procedi <i class="fa-solid fa-arrow-right"></i>';
+                    btnCheckout.style.background = 'var(--accent-gold)'; 
+                    btnCheckout.style.boxShadow = '0 4px 15px rgba(184, 134, 11, 0.2)';
+                    btnCheckout.style.pointerEvents = 'auto'; 
+                }
+            }
+        }
+
         function buildItemMap() {
             menuData.forEach(cat => cat.items.forEach(i => { i.categoryId = cat.id; itemMap[i.id] = i; }));
         }
 
-        function initApp() { buildItemMap(); renderFilters(); renderMenu(); }
+        function initApp() { 
+            buildItemMap(); 
+            renderFilters(); 
+            renderMenu(); 
+
+            // Controllo apertura
+            checkStoreStatus();
+            setInterval(checkStoreStatus, 60000); // Controlla ogni minuto
+        }
 
         function renderFilters() {
             const fc = document.getElementById('filters-container');
@@ -358,7 +465,7 @@
             menuData.forEach(cat => {
                 let html = `<div class="category-section" id="cat-${cat.id}"><h2 class="category-title">${cat.category}</h2>`;
                 cat.items.forEach(item => {
-                    // BLOCCO LA PERSONALIZZAZIONE PER BEVANDE, CONTORNI E ORA ANCHE DOLCI
+                    // BLOCCO LA PERSONALIZZAZIONE PER BEVANDE, CONTORNI E DOLCI
                     let hideCustomBtn = (cat.id === 'bibite' || cat.id === 'birre-bottiglia' || cat.id === 'contorni' || cat.id === 'dolci' || !item.desc);
                     let customBtn = hideCustomBtn ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen"></i> Rimuovi Ingr.</button>`;
                     
@@ -535,6 +642,14 @@
         function closeRecap() { document.getElementById('recap-modal').classList.remove('active'); }
         
         function proceedToCheckout() { 
+            // Controllo prima di proseguire se il locale ha chiuso nel frattempo
+            let slots = getAvailableSlots();
+            if (slots.length === 0) {
+                alert("Ci dispiace, il locale ha appena chiuso la ricezione degli ordini per oggi.");
+                closeRecap();
+                return;
+            }
+
             closeRecap(); 
             popolaOrari(); 
             
@@ -583,36 +698,21 @@
 
         function popolaOrari() {
             const select = document.getElementById('orario-consegna');
+            const btnPay = document.getElementById('pay-btn');
             select.innerHTML = '';
             
-            let now = new Date();
-            now.setMinutes(now.getMinutes() + 15);
-            
-            let h = now.getHours();
-            let m = now.getMinutes();
-            
-            let remainder = m % 15;
-            if (remainder !== 0) {
-                m = m + (15 - remainder);
-            }
-            if (m >= 60) { m -= 60; h++; }
+            let slots = getAvailableSlots();
 
-            let slotAggiunti = 0;
-            for(let i=0; i<12; i++) { 
-                let displayH = h % 24; 
-                let hh = String(displayH).padStart(2, '0');
-                let mm = String(m).padStart(2, '0');
-                
-                select.innerHTML += `<option value="${hh}:${mm}">${hh}:${mm}</option>`;
-                slotAggiunti++;
-                
-                m += 15;
-                if (m >= 60) { m -= 60; h++; }
-            }
-
-            if (slotAggiunti === 0) {
-                select.innerHTML = `<option value="">Locale chiuso</option>`;
-                document.getElementById('pay-btn').disabled = true;
+            if (slots.length === 0) {
+                select.innerHTML = `<option value="">Locale chiuso al momento</option>`;
+                btnPay.disabled = true;
+                btnPay.style.opacity = '0.5';
+            } else {
+                slots.forEach(slot => {
+                    select.innerHTML += `<option value="${slot}">${slot}</option>`;
+                });
+                btnPay.disabled = false;
+                btnPay.style.opacity = '1';
             }
         }
 
