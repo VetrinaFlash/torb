@@ -22,22 +22,74 @@
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        /* FIX INPUT E TEXTAREA PER IPHONE E ANDROID */
+        button, input, select, textarea {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            outline: none;
+            border-radius: 0;
+        }
+
         body { background: var(--bg-body); color: var(--text-main); padding-bottom: 120px; min-height: 100vh; }
 
-        .promo-bar { background: var(--accent-fire); color: #fff; text-align: center; padding: 10px 15px; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; }
-        #store-closed-banner { display: none; background: #b71c1c; color: #fff; text-align: center; padding: 10px 15px; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; z-index: 200; position: relative; }
+        /* PROMO BAR */
+        .promo-bar {
+            background: var(--accent-fire);
+            color: #fff;
+            text-align: center;
+            padding: 10px 15px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-        .promo-alert { background: rgba(184, 134, 11, 0.1); border: 1px dashed var(--accent-gold); color: var(--accent-gold); padding: 15px; border-radius: 6px; text-align: center; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; }
-        .promo-alert.success { background: rgba(211, 47, 47, 0.05); border-color: var(--accent-fire); color: var(--accent-fire); }
+        /* BANNER LOCALE CHIUSO */
+        #store-closed-banner {
+            display: none; 
+            background: #b71c1c; 
+            color: #fff; 
+            text-align: center; 
+            padding: 10px 15px; 
+            font-weight: 800; 
+            font-size: 0.85rem; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            z-index: 200; 
+            position: relative; 
+            box-shadow: 0 4px 10px rgba(183, 28, 28, 0.4);
+        }
 
+        /* PROMO ALERTS NEL CARRELLO */
+        .promo-alert {
+            background: rgba(184, 134, 11, 0.1);
+            border: 1px dashed var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .promo-alert.success {
+            background: rgba(211, 47, 47, 0.05);
+            border-color: var(--accent-fire);
+            color: var(--accent-fire);
+        }
+
+        /* HEADER */
         header { text-align: center; padding: 30px 20px 40px; background: var(--bg-header); border-bottom: 1px solid var(--border-light); }
         .header-logo { max-width: 220px; margin: 0 auto 20px; display: block; }
         .hero-subtitle-action { color: var(--accent-gold); font-size: 1.3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
 
-        .filters-container { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; position: sticky; top: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--border-light); }
+        /* FILTRI & MENU */
+        .filters-container { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; position: sticky; top: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--border-light); box-shadow: 0 4px 10px rgba(0,0,0,0.03);}
         .filters-container::-webkit-scrollbar { display: none; }
         .filter-btn { background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-light); padding: 8px 18px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; white-space: nowrap; cursor: pointer; text-transform: uppercase; transition: all 0.3s; }
-        .filter-btn.active { background: var(--accent-gold); color: #ffffff; border-color: var(--accent-gold); }
+        .filter-btn.active { background: var(--accent-gold); color: #ffffff; border-color: var(--accent-gold); box-shadow: 0 4px 10px rgba(184, 134, 11, 0.2); }
         
         .menu-container { padding: 0 15px; max-width: 1000px; margin: 0 auto;}
         .category-section { display: block; animation: fadeIn 0.4s ease-in-out; }
@@ -45,7 +97,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .category-title { padding: 40px 5px 15px; font-size: 1.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; border-bottom: 1px dashed var(--border-light); margin-bottom: 15px; }
         
-        .menu-item { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 20px; margin: 15px 0; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .menu-item { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 20px; margin: 15px 0; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: transform 0.2s;}
+        
         .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         .item-name { font-size: 1.1rem; font-weight: 800; color: var(--text-main); line-height: 1.3; padding-right: 10px; text-transform: uppercase;}
         .item-price { font-size: 1.2rem; font-weight: 800; color: var(--accent-gold); white-space: nowrap; }
@@ -53,34 +106,89 @@
         
         .controls { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 15px; border-top: 1px solid var(--border-light); }
         .qty-box { display: flex; align-items: center; gap: 15px; }
-        .btn-control { background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-light); border-radius: 4px; width: 32px; height: 32px; font-size: 1rem; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        
+        .btn-control { background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-light); border-radius: 4px; width: 32px; height: 32px; font-size: 1rem; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
+        .btn-control:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
         .qty { font-weight: 800; font-size: 1.2rem; min-width: 25px; text-align: center; }
-        .btn-custom { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: 4px; padding: 6px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+
+        .btn-custom { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: 4px; padding: 6px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.2s;}
+        .btn-custom:hover { border-color: var(--accent-fire); color: var(--accent-fire); }
         
         .variant-item { background: var(--bg-body); padding: 12px; border-radius: 4px; margin-top: 12px; border-left: 3px solid var(--accent-fire); border: 1px solid var(--border-light);}
+        .variant-desc { font-size: 0.8rem; color: var(--accent-fire); margin-bottom: 5px; line-height: 1.4; font-weight: 600;}
+        .variant-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; font-weight: 800; margin-bottom: 5px;}
 
+        /* MODALI */
         .checkout-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px; }
         .checkout-modal.active { display: flex; }
-        .checkout-content { background: var(--bg-card); border-radius: 8px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; }
+        .checkout-content { background: var(--bg-card); border: none; box-shadow: 0 15px 50px rgba(0,0,0,0.2); border-radius: 8px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; }
+        
         .modal-header { padding: 20px 25px; background: var(--bg-header); border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10;}
+        .modal-header h3 { color: var(--accent-gold); margin: 0; font-size: 1.2rem; font-weight: 800; }
+        .close-modal { color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.2s;}
+        .close-modal:hover { color: var(--text-main); }
         .modal-body { padding: 20px 25px; }
+
+        .custom-option-card { display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; background: var(--bg-body); padding: 15px; border-radius: 4px; border: 1px solid var(--border-light); margin-bottom: 10px; cursor: pointer; font-weight: 500;}
+        .custom-option-left input { margin-right: 15px; accent-color: var(--accent-fire); transform: scale(1.3); }
 
         .recap-list { background: var(--bg-body); border-radius: 8px; padding: 15px; max-height: 250px; overflow-y: auto; border: 1px solid var(--border-light); margin-bottom: 15px;}
         .recap-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; font-weight: 500; margin-bottom: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;}
-        
-        .upsell-container { display: grid; grid-template-columns: 1fr; gap: 12px; padding-bottom: 10px; margin-top: 15px; }
-        .upsell-card { background: var(--bg-body); border: 1px solid var(--border-light); padding: 15px; border-radius: 8px; text-align: center; }
+        .recap-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .btn-remove-recap { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
+        .btn-remove-recap:hover { color: var(--accent-fire); border-color: var(--accent-fire); background: #fff5f5; }
 
-        .btn-confirm-order { width: 100%; background: var(--accent-gold); color: #ffffff; border: none; padding: 18px; border-radius: 4px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        /* UPSELL */
+        .upsell-container { display: grid; grid-template-columns: 1fr; gap: 12px; padding-bottom: 10px; margin-top: 15px; }
+        .upsell-card { background: var(--bg-body); border: 1px solid var(--border-light); padding: 15px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        .upsell-card h4 { font-size: 0.95rem; margin-bottom: 8px; color: var(--text-main); font-weight: 700;}
+        .btn-upsell { background: transparent; color: var(--accent-gold); border: 1px solid var(--accent-gold); padding: 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 800; width: 100%; text-transform: uppercase; margin-top: 10px; cursor: pointer; transition: all 0.3s; }
+        .btn-upsell:hover { background: var(--accent-gold); color: #ffffff; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: var(--text-muted); text-transform: uppercase;}
         
+        /* FIX STILI CAMPI PER SMARTPHONE */
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 4px; 
+            background: var(--bg-body); 
+            border: 1px solid var(--border-light); 
+            color: var(--text-main); 
+            outline: none; 
+            font-family: inherit; 
+            font-size: 1rem; 
+            font-weight: 500;
+        }
+        
+        /* AGGIUNTA FRECCIA TENDINA PER IPHONE/ANDROID DOPO IL RESET */
+        .form-group select {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23b8860b" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent-gold); box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.1); background: #ffffff; }
+
+        .btn-confirm-order { width: 100%; background: var(--accent-gold); color: #ffffff; border: none; padding: 18px; border-radius: 4px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: background 0.3s; box-shadow: 0 4px 15px rgba(184, 134, 11, 0.2); }
+        .btn-confirm-order:hover { background: #9e730a; box-shadow: 0 6px 20px rgba(184, 134, 11, 0.3); }
+        .btn-confirm-order:disabled { opacity: 0.7; cursor: not-allowed; }
+        
+        .alert-box { background: #fff5f5; border: 1px dashed var(--accent-fire); padding: 15px; border-radius: 4px; margin-bottom: 20px; font-size: 0.85rem; color: var(--text-main); line-height: 1.5; font-weight: 500;}
+
         .cart-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); transform: translateY(120%); transition: transform 0.3s ease; z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
         .cart-footer.visible { transform: translateY(0); }
-        .cart-total { font-size: 1.4rem; font-weight: 900; color: var(--accent-gold); }
-        .btn-checkout { background: var(--accent-gold); color: #ffffff; border: none; padding: 14px 28px; border-radius: 4px; font-size: 1rem; font-weight: 900; text-transform: uppercase; cursor: pointer;}
+        .cart-total { font-size: 1.4rem; font-weight: 900; color: var(--accent-gold); display: flex; align-items: center;}
+        .btn-checkout { background: var(--accent-gold); color: #ffffff; border: none; padding: 14px 28px; border-radius: 4px; font-size: 1rem; font-weight: 900; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 15px rgba(184, 134, 11, 0.2); transition: 0.3s;}
+        .btn-checkout:hover { background: #9e730a; }
 
         @media (min-width: 768px) {
+            .filters-container { justify-content: center; }
             .category-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
             .category-title { grid-column: span 2; }
+            .menu-item { margin: 0; height: 100%; }
             .upsell-container { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
@@ -88,11 +196,11 @@
 <body>
 
     <div class="promo-bar">
-        🔥 SCONTO 10% SOPRA I 20€ | SCONTO 20% SOPRA I 50€ 🔥
+        <i class="fa-solid fa-fire"></i> SCONTO 10% SOPRA I 20€ | SCONTO 20% SOPRA I 50€ <i class="fa-solid fa-fire"></i>
     </div>
 
     <div id="store-closed-banner">
-        ⚠️ IL LOCALE È ATTUALMENTE CHIUSO. NON È POSSIBILE ORDINARE. ⚠️
+        IL LOCALE È ATTUALMENTE CHIUSO. NON È POSSIBILE ORDINARE.
     </div>
 
     <header>
@@ -115,10 +223,10 @@
         <div class="checkout-content">
             <div class="modal-header">
                 <h3 id="custom-title">Personalizza</h3>
-                <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="closeCustomModal()"></i>
+                <i class="fa-solid fa-xmark close-modal" onclick="closeCustomModal()"></i>
             </div>
             <div class="modal-body">
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Seleziona gli ingredienti da rimuovere.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 15px;">Seleziona gli ingredienti da rimuovere.</p>
                 <div id="custom-dynamic-sections"></div>
             </div>
             <div style="padding: 20px; border-top: 1px solid var(--border-light); background: #fafafa;">
@@ -131,12 +239,15 @@
         <div class="checkout-content">
             <div class="modal-header">
                 <h3>Il tuo Ordine</h3>
-                <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="closeRecap()"></i>
+                <i class="fa-solid fa-xmark close-modal" onclick="closeRecap()"></i>
             </div>
             <div class="modal-body">
                 <div class="recap-list" id="recap-list-container"></div>
+                
                 <div id="recap-promo-alert"></div>
+                
                 <h4 style="color: var(--accent-gold); margin-top: 25px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase;">Completa l'ordine</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 10px;">Aggiungi al volo i nostri preferiti:</p>
                 <div class="upsell-container" id="upsell-container"></div>
             </div>
             <div style="padding: 20px; border-top: 1px solid var(--border-light); background: #fafafa;">
@@ -149,21 +260,41 @@
         <div class="checkout-content">
             <div class="modal-header">
                 <h3>Dati Ritiro</h3>
-                <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="closeCheckout()"></i>
+                <i class="fa-solid fa-xmark close-modal" onclick="closeCheckout()"></i>
             </div>
             <div class="modal-body">
+                
                 <div id="checkout-order-info"></div>
-                <div id="sumup-card-container" style="display: none; background: white; padding: 10px; border-radius: 4px; margin-bottom: 15px;"><div id="sumup-card"></div></div>
+
+                <div id="sumup-card-container" style="display: none; background: white; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                    <div id="sumup-card"></div>
+                </div>
+
                 <div id="dati-cliente-form">
-                    <div class="form-group"><label>Nome e Cognome *</label><input type="text" id="cust-name" required></div>
-                    <div class="form-group"><label>Orario Ritiro *</label><select id="orario-consegna" name="orario" required></select></div>
-                    <div class="form-group"><label>Note Cucina</label><textarea id="cust-notes" rows="2"></textarea></div>
-                    <div class="alert-box">
-                        <p><i class="fa-regular fa-clock"></i> <strong>QUALITÀ E RITARDI:</strong> Nei momenti di punta potremmo avere 15-20 min di ritardo. <strong>Ti preghiamo di venire in orario:</strong> preferiamo che aspetti tu 10 min il prodotto caldo, piuttosto che il prodotto aspetti te raffreddandosi sul bancone!</p>
-                        <hr style="margin:15px 0; opacity:0.2">
-                        <p><strong>⚠️ ORDINI AUTOMATICI:</strong> Il numero WhatsApp non riceve messaggi. Ordine non annullabile dopo il pagamento.</p>
+                    <div class="form-group">
+                        <label>Nome e Cognome *</label>
+                        <input type="text" id="cust-name" required placeholder="Es. Mario Rossi">
                     </div>
-                    <button class="btn-confirm-order" onclick="sendOrderWithDetails()" id="pay-btn"><i class="fa-solid fa-credit-card"></i> Paga Ora (SumUp)</button>
+                    <div class="form-group">
+                        <label>Orario Ritiro (Locale) *</label>
+                        <select id="orario-consegna" name="orario" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Note Cucina / Cotture</label>
+                        <textarea id="cust-notes" rows="2" placeholder="Es. Hamburger ben cotto, salse a parte..."></textarea>
+                    </div>
+                    
+                    <div class="alert-box">
+                        <p><strong>QUALITÀ E RITARDI:</strong> Nei momenti di punta, le preparazioni in griglia potrebbero subire un ritardo di 15-20 minuti. Ti chiediamo comunque di <strong>arrivare puntuale</strong> all'orario scelto. <em>Credici, è molto meglio aspettare 10 minuti al locale per goderti un panino o un taglio di carne rovente e appena fatto, piuttosto che farlo raffreddare sul bancone aspettando te!</em><br><span style="font-size: 0.75rem; color: var(--text-muted);">(Non saremo responsabili per prodotti non ottimali a causa di un tuo ritardo nel ritiro).</span></p>
+                        
+                        <hr style="border: 0; border-top: 1px dashed var(--border-light); margin: 15px 0;">
+                        
+                        <p><strong style="color: var(--accent-fire);">REGOLE ORDINE:</strong> Dopo il pagamento, l'ordine va in preparazione in cucina e <u>non è annullabile né rimborsabile</u>. Il numero WhatsApp è un sistema automatico e non riceve chiamate o messaggi.</p>
+                    </div>
+                    
+                    <button class="btn-confirm-order" onclick="sendOrderWithDetails()" id="pay-btn">
+                        <i class="fa-solid fa-credit-card"></i> Paga Ora (SumUp)
+                    </button>
                 </div>
             </div>
         </div>
@@ -171,94 +302,242 @@
 
     <script>
         const menuData = [
-            { id: "tapas", category: "Tapas", items: [
-                { id: 10, name: "Pollo Crispy", desc: "Filetti di pollo, panatura Cornflakes, salsa Torb. 4pz", price: 9.00 },
-                { id: 11, name: "Polpette Pulled", desc: "Polpette di Pulled Pork, panatura alle mandorle, salsa bbq. 4pz", price: 9.50 },
-                { id: 12, name: "Mini Bun", desc: "Mini Bun, salsiccia e friarielli all'aglio. 2pz", price: 9.50 },
-                { id: 13, name: "Tacos Beef", desc: "Tacos, stracotto di Angus, cipolla caramellata, mayo fondo bruno. 2pz", price: 12.00 },
-                { id: 14, name: "Beef Nuggets", desc: "Stracotto di Black Angus, panatura Cornflakes, chutney di peperoni. 2pz", price: 9.00 },
-                { id: 15, name: "Polpette Black Angus", desc: "Polpette di Black Angus, fonduta di Parmigiano Reggiano. 4pz", price: 9.50 },
-                { id: 16, name: "Patanegra", desc: "Jamon de Bellota 100%, pan de tomate. 100gr", price: 26.00 }
-            ]},
-            { id: "patate", category: "Le Patate", items: [
-                { id: 20, name: "Patate Fritte Classiche", desc: "", price: 5.00 },
-                { id: 21, name: "Patate Salsiccia e Fonduta", desc: "", price: 7.50 },
-                { id: 22, name: "Patate Cheddar e Bacon", desc: "", price: 7.00 }
-            ]},
-            { id: "burgers", category: "Burgers Selezione de Matteo", items: [
-                { id: 30, name: "Torb Burger 180g", desc: "Hamburger 180g, insalata, pomodoro, cheddar, bacon, cipolla croccante, salsa Torb", price: 13.00 },
-                { id: 31, name: "Torb Burger 250g", desc: "Hamburger 250g, insalata, pomodoro, cheddar, bacon, cipolla croccante, salsa Torb", price: 15.50 },
-                { id: 32, name: "Torb Burger WAGYU", desc: "Hamburger Wagyu, insalata, pomodoro, cheddar, bacon, cipolla croccante, salsa Torb", price: 25.00 },
-                { id: 33, name: "Luca 180g", desc: "Hamburger 180g, insalata, guanciale croccante, caprino, chutney di pere, noci", price: 13.50 },
-                { id: 34, name: "Luca 250g", desc: "Hamburger 250g, insalata, guanciale croccante, caprino, chutney di pere, noci", price: 16.00 },
-                { id: 35, name: "Luca WAGYU", desc: "Hamburger Wagyu, insalata, guanciale croccante, caprino, chutney di pere, noci", price: 26.00 },
-                { id: 36, name: "Friariello 180g", desc: "Hamburger 180g, provola, friarielli, mayo all'aglio nero, tarallo sbriciolato", price: 12.50 },
-                { id: 37, name: "Friariello 250g", desc: "Hamburger 250g, provola, friarielli, mayo all'aglio nero, tarallo sbriciolato", price: 15.00 },
-                { id: 38, name: "Friariello WAGYU", desc: "Hamburger Wagyu, provola, friarielli, mayo all'aglio nero, tarallo sbriciolato", price: 24.50 },
-                { id: 39, name: "Patanegra Burger 180g", desc: "Hamburger 180g, Jamon de Bellota 100%, provola, rucola, pomodori in doppia consistenza", price: 19.00 },
-                { id: 40, name: "Purple Cheese 180g", desc: "Hamburger 180g, cheddar, bacon, cipolle caramellate, cavolo viola", price: 13.00 },
-                { id: 41, name: "Pulled Pork", desc: "Pulled Pork, chutney di peperoni, mayo al fondo bruno, patate al forno, mandorle tostate", price: 11.00 },
-                { id: 42, name: "Chicken", desc: "Pollo con panatura Cornflakes, provola, insalata, mayo", price: 11.00 },
-                { id: 43, name: "Chicken DOPPIO", desc: "Doppio Pollo panatura Cornflakes, provola, insalata, mayo", price: 14.00 }
-            ]},
-            { id: "carne", category: "La Carne", items: [
-                { id: 50, name: "Filetto 250gr", desc: "Scegli abbinamento nelle note (Fondo bruno, Provola e friarielli, etc.)", price: 30.00 },
-                { id: 51, name: "Tagliata 300gr", desc: "Scegli abbinamento nelle note (Crema Pistacchio, Tartufo, etc.)", price: 30.00 },
-                { id: 52, name: "Hamburger 250gr al piatto", desc: "Incluso 1 contorno a scelta", price: 15.00 },
-                { id: 53, name: "T-Bone 700/800g", desc: "Cottura Medio/Sangue. 1 Contorno incluso", price: 64.00 },
-                { id: 54, name: "Costata 700/800g", desc: "Cottura Medio/Sangue. 1 Contorno incluso", price: 64.00 }
-            ]},
-            { id: "contorni", category: "I Contorni", items: [
-                { id: 60, name: "Patate Fritte", price: 5.00 },
-                { id: 61, name: "Patate al Forno", price: 5.00 },
-                { id: 62, name: "Friarielli", price: 6.00 },
-                { id: 63, name: "Insalata Verde", price: 4.00 },
-                { id: 64, name: "Rucola e Pomodori", price: 5.00 }
-            ]},
-            { id: "dolci", category: "Dolci (Anima Dolce)", items: [
-                { id: 70, name: "Birramisù", desc: "Mousse al mascarpone, crema alla birra, crumble al burro", price: 7.00 },
-                { id: 71, name: "Pastiera Scomposta", desc: "Crumble al burro, ricotta e grano", price: 7.00 },
-                { id: 72, name: "Tiramisù Classico", desc: "Savoiardo al caffè, cuore cioccolato caramello", price: 7.00 },
-                { id: 73, name: "Cheesecake", desc: "Crema al formaggio, frutti rossi", price: 7.00 }
-            ]},
-            { id: "birre-spina", category: "Birre alla Spina", items: [
-                { id: 80, name: "Krombacher Pils 20cl", price: 3.50 },
-                { id: 81, name: "Krombacher Pils 40cl", price: 6.00 },
-                { id: 82, name: "Torb Smoked Ale 20cl", price: 4.00 },
-                { id: 83, name: "Torb Smoked Ale 40cl", price: 7.00 }
-            ]},
-            { id: "birre-bottiglia", category: "Birre in Bottiglia", items: [
-                { id: 90, name: "Hofbrau Munchen - 33cl", price: 4.50 },
-                { id: 91, name: "Flensburger (Gold/Weizen/Dunkel)", price: 6.50 },
-                { id: 92, name: "Ventitre - Mida 33cl", price: 10.00 },
-                { id: 93, name: "Tyris - Marzen 33cl", price: 9.00 },
-                { id: 94, name: "Gouden Carolus (Classic/Ambrio/Triple)", price: 9.50 },
-                { id: 95, name: "Krombacher Pils Analcolica", price: 4.00 }
-            ]},
-            { id: "vini", category: "Vini & Bollicine", items: [
-                { id: 200, name: "Prosecco Doc Frescobaldi", price: 25.00 },
-                { id: 201, name: "Dubl Brut", price: 50.00 },
-                { id: 202, name: "Ca' del Bosco Prestige", price: 70.00 },
-                { id: 203, name: "Greco di Tufo Docg", price: 25.00 },
-                { id: 204, name: "Fiano di Avellino Doc", price: 25.00 },
-                { id: 205, name: "Falanghina Doc", price: 22.00 },
-                { id: 206, name: "Sabbienere Aglianico", price: 25.00 },
-                { id: 207, name: "Gragnano Doc", price: 19.00 }
-            ]},
-            { id: "bibite", category: "Bibite", items: [
-                { id: 300, name: "Acqua Ferrarelle / Electa", price: 3.00 },
-                { id: 301, name: "Coca Cola / Zero / Fanta", price: 3.00 }
-            ]}
+            {
+                id: "tapas", category: "Tapas",
+                items: [
+                    { id: 101, name: "Pollo Crispy (4pz)", desc: "Filetti di pollo, panatura Cornflakes, salsa Torb", price: 9.00 },
+                    { id: 102, name: "Polpette Pulled (4pz)", desc: "Polpette di Pulled Pork, panatura alle mandorle, salsa bbq", price: 9.50 },
+                    { id: 103, name: "Mini Bun (2pz)", desc: "Mini Bun, salsiccia, friarielli all'aglio", price: 9.50 },
+                    { id: 104, name: "Tacos Beef (2pz)", desc: "Tacos, stracotto di Angus, cipolla caramellata, mayo fondo bruno", price: 12.00 },
+                    { id: 105, name: "Beef Nuggets (2pz)", desc: "Stracotto di Black Angus, panatura Cornflakes, chutney di peperoni", price: 9.00 },
+                    { id: 106, name: "Polpette Black Angus (4pz)", desc: "Polpette di Black Angus, fonduta di Parmigiano Reggiano", price: 9.50 },
+                    { id: 107, name: "Patanegra (100gr)", desc: "Jamon de Bellota 100%, pan de tomate", price: 26.00 }
+                ]
+            },
+            {
+                id: "patate", category: "Le Patate",
+                items: [
+                    { id: 201, name: "Patate Fritte Classiche", desc: "", price: 5.00 },
+                    { id: 202, name: "Patate Salsiccia e Fonduta", desc: "", price: 7.50 },
+                    { id: 203, name: "Patate Cheddar e Bacon", desc: "", price: 7.00 }
+                ]
+            },
+            {
+                id: "burgers", category: "Burgers Selezione de Matteo",
+                items: [
+                    { id: 301, name: "Torb Burger 180g", desc: "Hamburger 180gr, insalata, pomodoro, cheddar, bacon, cipolla croccante, salsa Torb", price: 13.00 },
+                    { id: 302, name: "Torb Burger 250g", desc: "Hamburger 250gr, insalata, pomodoro, cheddar, bacon, cipolla croccante, salsa Torb", price: 15.50 },
+                    { id: 303, name: "Torb Burger WAGYU", desc: "Hamburger Wagyu, insalata, pomodoro, cheddar, bacon, cipolla croccante, salsa Torb", price: 25.00 },
+                    { id: 304, name: "Luca 180g", desc: "Hamburger 180gr, insalata, guanciale croccante, caprino, chutney di pere, noci", price: 13.50 },
+                    { id: 305, name: "Luca 250g", desc: "Hamburger 250gr, insalata, guanciale croccante, caprino, chutney di pere, noci", price: 16.00 },
+                    { id: 306, name: "Luca WAGYU", desc: "Hamburger Wagyu, insalata, guanciale croccante, caprino, chutney di pere, noci", price: 26.00 },
+                    { id: 307, name: "Friariello 180g", desc: "Hamburger 180gr, provola, friarielli, mayo all'aglio nero, tarallo sbriciolato", price: 12.50 },
+                    { id: 308, name: "Friariello 250g", desc: "Hamburger 250gr, provola, friarielli, mayo all'aglio nero, tarallo sbriciolato", price: 15.00 },
+                    { id: 309, name: "Friariello WAGYU", desc: "Hamburger Wagyu, provola, friarielli, mayo all'aglio nero, tarallo sbriciolato", price: 24.50 },
+                    { id: 310, name: "Patanegra Burger 180g", desc: "Hamburger 180gr, Jamon de Bellota 100%, provola, rucola, pomodori in doppia consistenza", price: 19.00 },
+                    { id: 311, name: "Patanegra Burger 250g", desc: "Hamburger 250gr, Jamon de Bellota 100%, provola, rucola, pomodori in doppia consistenza", price: 21.00 },
+                    { id: 312, name: "Patanegra Burger WAGYU", desc: "Hamburger Wagyu, Jamon de Bellota 100%, provola, rucola, pomodori in doppia consistenza", price: 29.00 },
+                    { id: 313, name: "Purple Cheese 180g", desc: "Hamburger 180gr, cheddar, bacon, cipolle caramellate, cavolo viola", price: 13.00 },
+                    { id: 314, name: "Purple Cheese 250g", desc: "Hamburger 250gr, cheddar, bacon, cipolle caramellate, cavolo viola", price: 15.50 },
+                    { id: 315, name: "Purple Cheese WAGYU", desc: "Hamburger Wagyu, cheddar, bacon, cipolle caramellate, cavolo viola", price: 24.50 },
+                    { id: 316, name: "Pulled Pork", desc: "Pulled Pork, chutney di peperoni, mayo al fondo bruno, patate al forno, mandorle tostate", price: 11.00 },
+                    { id: 317, name: "Chicken", desc: "Pollo panatura Cornflakes, provola, insalata, mayo", price: 11.00 },
+                    { id: 318, name: "Doppio Pollo", desc: "Doppio pollo panatura Cornflakes, provola, insalata, mayo", price: 14.00 }
+                ]
+            },
+            {
+                id: "bistecche", category: "Le Bistecche",
+                items: [
+                    { id: 401, name: "T-Bone 700/800g", desc: "Cottura Medio/Sangue. 1 Contorno incluso. (Scrivi il contorno nelle note)", price: 64.00 },
+                    { id: 402, name: "Costata 700/800g", desc: "Cottura Medio/Sangue. 1 Contorno incluso. (Scrivi il contorno nelle note)", price: 64.00 }
+                ]
+            },
+            {
+                id: "carne", category: "La Carne",
+                items: [
+                    { id: 501, name: "Filetto 250gr", desc: "Scrivi abbinamento nelle note: Fondo bruno, Provola e friarielli, Fonduta, Crema pistacchio, Pecorino e tartufo, o Contorno a scelta", price: 30.00 },
+                    { id: 502, name: "Tagliata 300gr", desc: "Scrivi abbinamento nelle note: Fondo bruno, Provola e friarielli, Fonduta, Crema pistacchio, Pecorino e tartufo, o Contorno a scelta", price: 30.00 },
+                    { id: 503, name: "Hamburger 250gr al piatto", desc: "Scrivi abbinamento nelle note: Fondo bruno, Provola e friarielli, Fonduta, Crema pistacchio, Pecorino e tartufo, o Contorno a scelta", price: 15.00 }
+                ]
+            },
+            {
+                id: "contorni", category: "I Contorni",
+                items: [
+                    { id: 601, name: "Patate Fritte", desc: "", price: 5.00 },
+                    { id: 602, name: "Patate al Forno", desc: "", price: 5.00 },
+                    { id: 603, name: "Friarielli", desc: "", price: 6.00 },
+                    { id: 604, name: "Insalata Verde", desc: "", price: 4.00 },
+                    { id: 605, name: "Rucola e Pomodori", desc: "", price: 5.00 }
+                ]
+            },
+            {
+                id: "dolci", category: "Dolci (Anima Dolce)",
+                items: [
+                    { id: 701, name: "Birramisù", desc: "Mousse al mascarpone, crema alla birra, crumble al burro", price: 7.00 },
+                    { id: 702, name: "Pastiera", desc: "Scomposta con crumble al burro, ricotta e grano", price: 7.00 },
+                    { id: 703, name: "Tiramisù", desc: "Savoiardo al caffè, cuore di cioccolato caramello, mousse al mascarpone", price: 7.00 },
+                    { id: 704, name: "Cheesecake", desc: "Crumble al burro, crema al formaggio, composta ai frutti rossi", price: 7.00 }
+                ]
+            },
+            {
+                id: "bibite", category: "Le Bibite",
+                items: [
+                    { id: 801, name: "Acqua Ferrarelle", desc: "", price: 3.00 },
+                    { id: 802, name: "Acqua Electa", desc: "", price: 3.00 },
+                    { id: 803, name: "Coca Cola", desc: "", price: 3.00 },
+                    { id: 804, name: "Coca Cola Zero", desc: "", price: 3.00 },
+                    { id: 805, name: "Fanta", desc: "", price: 3.00 }
+                ]
+            },
+            {
+                id: "birre-spina", category: "Birre alla Spina",
+                items: [
+                    { id: 901, name: "Krombacher Pils 20cl", desc: "Dorata - Pils (4.8%)", price: 3.50 },
+                    { id: 902, name: "Krombacher Pils 40cl", desc: "Dorata - Pils (4.8%)", price: 6.00 },
+                    { id: 903, name: "Torb 20cl", desc: "Ambrata - Smoked Ale (5.8%)", price: 4.00 },
+                    { id: 904, name: "Torb 40cl", desc: "Ambrata - Smoked Ale (5.8%)", price: 7.00 }
+                ]
+            },
+            {
+                id: "birre-bottiglia", category: "Birre in Bottiglia",
+                items: [
+                    { id: 1001, name: "Hofbrau Munchen Pure 33cl", desc: "Helles - Dorata Chiara (5.3%)", price: 4.50 },
+                    { id: 1002, name: "Flensburger Gold 33cl", desc: "Export Lager - Dorata (4.8%)", price: 6.50 },
+                    { id: 1003, name: "Flensburger Weizen 33cl", desc: "Hefeweizen - Dorata Velata (5.1%)", price: 6.50 },
+                    { id: 1004, name: "Flensburger Dunkel 33cl", desc: "Dunkel Lager - Ambrata Scura (4.8%)", price: 6.50 },
+                    { id: 1005, name: "Ventitre Mida 33cl", desc: "Belgian Golden Strong - Dorata (8%)", price: 10.00 },
+                    { id: 1006, name: "Tyris Marzen 33cl", desc: "Märzen - Ambrata (5.5%)", price: 9.00 },
+                    { id: 1007, name: "Gouden Carolus Ambrio 33cl", desc: "Belgian Amber Ale - Ambrata (8%)", price: 9.50 },
+                    { id: 1008, name: "Gouden Carolus Triple 33cl", desc: "Belgian Triple - Dorata (9%)", price: 9.50 },
+                    { id: 1009, name: "Krombacher Alkoholfree 33cl", desc: "Pils Analcolica - Dorata (0%)", price: 4.00 }
+                ]
+            },
+            {
+                id: "bollicine", category: "Bollicine",
+                items: [
+                    { id: 1101, name: "Prosecco Doc Frescobaldi", desc: "", price: 25.00 },
+                    { id: 1102, name: "Dubl Brut", desc: "Feudi di San Gregorio", price: 50.00 },
+                    { id: 1103, name: "Ca' del Bosco Prestige", desc: "", price: 70.00 }
+                ]
+            },
+            {
+                id: "vini-bianchi", category: "Vini Bianchi",
+                items: [
+                    { id: 1201, name: "Greco di Tufo Docg", desc: "Feudi di San Gregorio", price: 25.00 },
+                    { id: 1202, name: "Fiano di Avellino Doc", desc: "Feudi di San Gregorio", price: 25.00 },
+                    { id: 1203, name: "Falanghina Doc", desc: "Feudi di San Gregorio", price: 22.00 }
+                ]
+            },
+            {
+                id: "vini-rosati", category: "Vini Rosati",
+                items: [
+                    { id: 1301, name: "Alie Toscana Igt", desc: "Frescobaldi", price: 24.00 },
+                    { id: 1302, name: "Dubl Rosé Brut", desc: "Feudi di San Gregorio", price: 50.00 }
+                ]
+            },
+            {
+                id: "vini-rossi", category: "Vini Rossi",
+                items: [
+                    { id: 1401, name: "Sabbienere", desc: "Aglianico Irpinia Doc - Feudi di San Gregorio", price: 25.00 },
+                    { id: 1402, name: "Erre", desc: "Falerno del Massico Doc - Trabucco", price: 27.00 },
+                    { id: 1403, name: "Terra d'Eclano", desc: "Aglianico Irpinia Doc - Quintodecimo", price: 60.00 },
+                    { id: 1404, name: "Selva di Luoti", desc: "Taurasi Docg - Feudi di San Gregorio", price: 45.00 },
+                    { id: 1405, name: "Gragnano Doc", desc: "Antiche Radici", price: 19.00 }
+                ]
+            }
         ];
 
         let cart = {}; let itemMap = {}; let currentCustomItemId = null;
+
+        // CALCOLO ORARI E GESTIONE CHIUSURA LOCALE TORB
+        function getAvailableSlots() {
+            let slots = [];
+            let now = new Date();
+            now.setMinutes(now.getMinutes() + 15);
+            
+            let actualDay = now.getDay();
+            let actualHour = now.getHours();
+            let actualMin = now.getMinutes();
+
+            // La notte fa parte del giorno logico precedente
+            let logicalDay = actualDay;
+            let calcHour = actualHour;
+            if (actualHour < 5) {
+                logicalDay = actualDay === 0 ? 6 : actualDay - 1;
+                calcHour += 24; 
+            }
+
+            // Orari apertura TORB (Lunedì Chiuso, Mar-Gio/Dom fino 1:00, Ven-Sab fino 2:30)
+            const schedule = {
+                1: null, // Lunedì Chiuso
+                2: { open: 19 * 60, close: 25 * 60 }, // Mar 19:00 - 01:00
+                3: { open: 19 * 60, close: 25 * 60 }, // Mer 19:00 - 01:00
+                4: { open: 19 * 60, close: 25 * 60 }, // Gio 19:00 - 01:00
+                5: { open: 19 * 60, close: 26 * 60 + 30 }, // Ven 19:00 - 02:30
+                6: { open: 19 * 60, close: 26 * 60 + 30 }, // Sab 19:00 - 02:30
+                0: { open: 19 * 60, close: 25 * 60 }  // Dom 19:00 - 01:00
+            };
+
+            let todaySchedule = schedule[logicalDay];
+            let currentMins = calcHour * 60 + actualMin;
+
+            if (todaySchedule) {
+                let firstAvailable = currentMins;
+                let remainder = firstAvailable % 15;
+                if (remainder !== 0) {
+                    firstAvailable += (15 - remainder);
+                }
+
+                let startMins = Math.max(firstAvailable, todaySchedule.open);
+
+                for (let t = startMins; t <= todaySchedule.close; t += 15) {
+                    let displayH = Math.floor(t / 60) % 24;
+                    let displayM = t % 60;
+                    
+                    let hh = String(displayH).padStart(2, '0');
+                    let mm = String(displayM).padStart(2, '0');
+                    
+                    slots.push(`${hh}:${mm}`);
+                }
+            }
+            return slots;
+        }
+
+        // CONTROLLA SE IL NEGOZIO E' APERTO
+        function checkStoreStatus() {
+            let slots = getAvailableSlots();
+            const btnCheckout = document.querySelector('.btn-checkout');
+            const storeClosedBanner = document.getElementById('store-closed-banner');
+            
+            if(slots.length === 0) {
+                if(storeClosedBanner) storeClosedBanner.style.display = 'block';
+                if(btnCheckout) {
+                    btnCheckout.innerHTML = '<i class="fa-solid fa-store-slash"></i> Chiuso';
+                    btnCheckout.style.background = '#888888'; 
+                    btnCheckout.style.boxShadow = 'none';
+                    btnCheckout.style.pointerEvents = 'none'; 
+                }
+            } else {
+                if(storeClosedBanner) storeClosedBanner.style.display = 'none';
+                if(btnCheckout) {
+                    btnCheckout.innerHTML = 'Procedi <i class="fa-solid fa-arrow-right"></i>';
+                    btnCheckout.style.background = 'var(--accent-gold)'; 
+                    btnCheckout.style.boxShadow = '0 4px 15px rgba(184, 134, 11, 0.2)';
+                    btnCheckout.style.pointerEvents = 'auto'; 
+                }
+            }
+        }
 
         function buildItemMap() {
             menuData.forEach(cat => cat.items.forEach(i => { i.categoryId = cat.id; itemMap[i.id] = i; }));
         }
 
         function initApp() { 
-            buildItemMap(); renderFilters(); renderMenu(); checkStoreStatus();
+            buildItemMap(); 
+            renderFilters(); 
+            renderMenu(); 
+
+            checkStoreStatus();
             setInterval(checkStoreStatus, 60000);
         }
 
@@ -276,6 +555,7 @@
             document.querySelectorAll('.category-section').forEach(sec => {
                 if (catId === 'all' || sec.id === `cat-${catId}`) sec.classList.remove('hidden'); else sec.classList.add('hidden');
             });
+            window.scrollTo({ top: document.getElementById('filters-container').offsetTop - 10, behavior: 'smooth' });
         }
 
         function renderMenu() {
@@ -283,23 +563,32 @@
             menuData.forEach(cat => {
                 let html = `<div class="category-section" id="cat-${cat.id}"><h2 class="category-title">${cat.category}</h2>`;
                 cat.items.forEach(item => {
-                    // BLOCCO PERSONALIZZAZIONE DOLCI E BEVANDE
-                    let hideCustom = (cat.id === 'dolci' || cat.id === 'bibite' || cat.id === 'birre-spina' || cat.id === 'birre-bottiglia' || cat.id === 'vini' || cat.id === 'contorni' || !item.desc);
-                    let customBtn = hideCustom ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen"></i> Rimuovi Ingr.</button>`;
+                    
+                    // BLOCCO LA PERSONALIZZAZIONE PER BEVANDE, CONTORNI E DOLCI
+                    let hideCustomBtn = (cat.id === 'bibite' || cat.id === 'birre-spina' || cat.id === 'birre-bottiglia' || cat.id === 'bollicine' || cat.id.startsWith('vini') || cat.id === 'contorni' || cat.id === 'dolci' || !item.desc);
+                    let customBtn = hideCustomBtn ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen"></i> Rimuovi Ingr.</button>`;
+                    
                     html += `
                         <div class="menu-item">
-                            <div class="item-header"><div class="item-name">${item.name}</div><div class="item-price">${item.price.toFixed(2).replace('.',',')}€</div></div>
+                            <div class="item-header">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-price">${item.price.toFixed(2).replace('.',',')}€</div>
+                            </div>
                             <p class="item-desc">${item.desc || ""}</p>
-                            <div class="controls">${customBtn}<div style="flex-grow:1"></div>
+                            <div class="controls">
+                                ${customBtn}
+                                <div style="flex-grow:1;"></div>
                                 <div class="qty-box">
-                                    <button class="btn-control" onclick="handleRemoveClick('${item.id}')">-</button>
+                                    <button class="btn-control" onclick="handleRemoveClick('${item.id}')"><i class="fa-solid fa-minus"></i></button>
                                     <span class="qty" id="qty-${item.id}">0</span>
-                                    <button class="btn-control" onclick="handleAddClick('${item.id}')">+</button>
+                                    <button class="btn-control" onclick="handleAddClick('${item.id}')"><i class="fa-solid fa-plus"></i></button>
                                 </div>
-                            </div><div id="variants-${item.id}"></div>
+                            </div>
+                            <div id="variants-${item.id}"></div>
                         </div>`;
                 });
-                container.innerHTML += html + `</div>`;
+                html += `</div>`;
+                container.innerHTML += html;
             });
         }
 
@@ -310,13 +599,14 @@
             if (variants.length === 1 && baseCount === 0) updateQty(variants[0], -1);
             else if (variants.length > 0 || baseCount > 0) {
                 if (variants.length === 0) updateQty(id, -1);
-                else alert("Rimuovi le varianti custom singolarmente.");
+                else alert("Rimuovi le varianti usando i tasti delle singole voci.");
             }
         }
 
         function updateQty(id, change) {
             cart[id] = (cart[id] || 0) + change;
             if (cart[id] < 0) cart[id] = 0;
+            
             if (itemMap[id] && itemMap[id].isCustom) {
                 document.getElementById(`variant-${id}`).style.display = cart[id] > 0 ? 'block' : 'none';
                 document.getElementById(`qty-${id}`).innerText = cart[id];
@@ -331,115 +621,301 @@
         function updateBaseQty(baseId) {
             let total = cart[baseId] || 0;
             for(let id in cart) if(cart[id] > 0 && itemMap[id]?.isCustom && itemMap[id].baseId == baseId) total += cart[id];
-            let el = document.getElementById(`qty-${baseId}`);
-            if(el) el.innerText = total;
+            document.getElementById(`qty-${baseId}`).innerText = total;
         }
 
         function updateCartUI() {
             let subtotal = 0, count = 0;
-            for(let id in cart) if (cart[id] > 0 && itemMap[id]) { subtotal += itemMap[id].price * cart[id]; count += cart[id]; }
-            let discountRate = (subtotal >= 50) ? 0.20 : (subtotal >= 20 ? 0.10 : 0);
+            for(let id in cart) {
+                if (cart[id] > 0 && itemMap[id]) { subtotal += itemMap[id].price * cart[id]; count += cart[id]; }
+            }
+            
+            let discountRate = 0;
+            if(subtotal >= 50) discountRate = 0.20;
+            else if(subtotal >= 20) discountRate = 0.10;
+
             let total = subtotal * (1 - discountRate);
-            document.getElementById('total-price').innerHTML = discountRate > 0 ? `<span style="text-decoration:line-through; font-size:0.9rem; opacity:0.5">${subtotal.toFixed(2)}€</span> ${total.toFixed(2)}€` : `${total.toFixed(2)}€`;
-            document.getElementById('cart-footer').classList.toggle('visible', count > 0);
+
+            let priceHtml = '';
+            if(discountRate > 0) {
+                priceHtml = `<span style="text-decoration:line-through; font-size:0.9rem; color:var(--text-muted); margin-right:8px;">${subtotal.toFixed(2).replace('.',',')}€</span>${total.toFixed(2).replace('.',',')} € <span style="font-size:0.8rem; color:var(--accent-fire); font-weight:800; margin-left:5px;">-${discountRate*100}%</span>`;
+            } else {
+                priceHtml = `${total.toFixed(2).replace('.',',')} €`;
+            }
+
+            document.getElementById('total-price').innerHTML = priceHtml;
+            const f = document.getElementById('cart-footer');
+            count > 0 ? f.classList.add('visible') : f.classList.remove('visible');
         }
 
         function openCustomModal(id) {
             currentCustomItemId = id;
             const item = itemMap[id];
             document.getElementById('custom-title').innerText = item.name;
-            let parts = (item.desc || "").split(/ e |,| con /i).map(s => s.trim()).filter(s => s.length > 2);
-            document.getElementById('custom-dynamic-sections').innerHTML = parts.map(ing => `<label class="custom-option-card"><div class="custom-option-left"><input type="checkbox" value="${ing}" class="rm-chk"> Senza ${ing}</div></label>`).join('') || "Nessuna personalizzazione.";
+            let html = '';
+            if(item.desc) {
+                let parts = item.desc.split(/ e |,| con | oppure /i).map(s => s.trim()).filter(s => s.length > 2);
+                parts.forEach(ing => {
+                    html += `<label class="custom-option-card"><div class="custom-option-left"><input type="checkbox" value="${ing}" class="rm-chk"> Senza ${ing}</div></label>`;
+                });
+            }
+            document.getElementById('custom-dynamic-sections').innerHTML = html || "<p style='color:var(--text-muted);font-weight:500;'>Nessun ingrediente modificabile.</p>";
             document.getElementById('custom-modal').classList.add('active');
         }
-        function closeCustomModal() { document.getElementById('custom-modal').classList.remove('active'); }
+        function closeCustomModal() { document.getElementById('custom-modal').classList.remove('active'); currentCustomItemId = null; }
         
         function addCustomItemToCart() {
+            if(!currentCustomItemId) return;
             const item = itemMap[currentCustomItemId];
             let rems = Array.from(document.querySelectorAll('.rm-chk:checked')).map(c => c.value);
             if(rems.length === 0) { updateQty(item.id, 1); closeCustomModal(); return; }
-            let cId = "c_" + item.id + "_" + Math.abs(rems.join('').split('').reduce((a,b)=>((a<<5)-a)+b.charCodeAt(0),0));
+            
+            let safeHashString = rems.map(r => r.substring(0,3)).join('').replace(/\s/g,'');
+            let cId = "c_" + item.id + "_" + safeHashString;
+
             if(!itemMap[cId]) {
                 itemMap[cId] = { id: cId, baseId: item.id, name: item.name, price: item.price, isCustom: true, removed: rems };
-                document.getElementById(`variants-${item.id}`).insertAdjacentHTML('beforeend', `<div class="variant-item" id="variant-${cId}" style="font-size:0.8rem; padding:10px; border:1px solid #ddd; margin-top:5px; border-radius:5px"><strong>Variante Custom (Senza ${rems.join(', ')})</strong><div style="float:right"><button onclick="updateQty('${cId}',-1)">-</button> <span id="qty-${cId}">0</span> <button onclick="updateQty('${cId}',1)">+</button></div></div>`);
+                let h = `<div class="variant-item" id="variant-${cId}">
+                    <div class="variant-header"><span>Variante Custom</span>
+                        <div style="display:flex;gap:10px;"><button class="btn-control" onclick="updateQty('${cId}',-1)"><i class="fa-solid fa-minus"></i></button><span class="qty" id="qty-${cId}">0</span><button class="btn-control" onclick="updateQty('${cId}',1)"><i class="fa-solid fa-plus"></i></button></div>
+                    </div>
+                    <div class="variant-desc">- Senza ${rems.join(', ')}</div></div>`;
+                document.getElementById(`variants-${item.id}`).insertAdjacentHTML('beforeend', h);
             }
             updateQty(cId, 1); closeCustomModal();
         }
 
+        function removeFromRecap(id) { if(cart[id]>0){ updateQty(id, -cart[id]); openRecap(); } }
+        
         function openRecap() {
             const rc = document.getElementById('recap-list-container'); rc.innerHTML = '';
+            let totItems = 0;
             let subtotal = 0;
-            for(let id in cart) if(cart[id]>0 && itemMap[id]) {
-                let i = itemMap[id]; subtotal += i.price * cart[id];
-                rc.innerHTML += `<div class="recap-item"><div><strong>${cart[id]}x</strong> ${i.name} ${i.isCustom ? `<br><small style="color:red">Senza ${i.removed.join(', ')}</small>` : ''}</div><div>${(i.price*cart[id]).toFixed(2)}€</div></div>`;
+
+            for(let id in cart) {
+                if(cart[id]>0 && itemMap[id]) {
+                    totItems++;
+                    let i = itemMap[id];
+                    subtotal += i.price * cart[id];
+                    let txt = i.isCustom ? `<br><small style="color:var(--accent-fire)">Senza ${i.removed.join(', ')}</small>` : '';
+                    rc.innerHTML += `<div class="recap-item"><div><strong>${cart[id]}x</strong> ${i.name} ${txt}</div><div style="display:flex;gap:15px;align-items:center;"><span style="color:var(--text-main); font-weight:800;">${(i.price*cart[id]).toFixed(2).replace('.',',')}€</span><button class="btn-remove-recap" onclick="removeFromRecap('${id}')"><i class="fa-solid fa-xmark"></i></button></div></div>`;
+                }
             }
-            const missing = subtotal < 20 ? 20 - subtotal : (subtotal < 50 ? 50 - subtotal : 0);
-            const discMsg = subtotal < 20 ? `Mancano ${missing.toFixed(2)}€ per lo sconto 10%!` : (subtotal < 50 ? `🔥 Sconto 10% attivo! Aggiungi ${missing.toFixed(2)}€ per il 20%!` : "✅ MASSIMO SCONTO ATTIVO!");
-            document.getElementById('recap-promo-alert').innerHTML = `<div class="promo-alert">${discMsg}</div>`;
-            
-            // Upsell semplice
+            if(totItems===0) { closeRecap(); return; }
+
+            const promoAlertBox = document.getElementById('recap-promo-alert');
+            if(subtotal < 20) {
+                let missing = 20 - subtotal;
+                promoAlertBox.innerHTML = `<div class="promo-alert">Mancano solo <strong>${missing.toFixed(2).replace('.',',')}€</strong> per sbloccare il <strong>10% di sconto</strong> su tutto l'ordine!</div>`;
+            } else if (subtotal < 50) {
+                let missing = 50 - subtotal;
+                promoAlertBox.innerHTML = `<div class="promo-alert success"><i class="fa-solid fa-fire"></i> Hai sbloccato il <strong>10% di sconto</strong>!<br>Aggiungi <strong>${missing.toFixed(2).replace('.',',')}€</strong> per avere il <strong>20% di sconto</strong>.</div>`;
+            } else {
+                promoAlertBox.innerHTML = `<div class="promo-alert success"><i class="fa-solid fa-fire"></i> COMPLIMENTI! Hai sbloccato il <strong>MASSIMO SCONTO (20%)</strong>! <i class="fa-solid fa-fire"></i></div>`;
+            }
+
             const uc = document.getElementById('upsell-container'); uc.innerHTML = '';
-            menuData[0].items.slice(0,3).forEach(u => {
-                uc.innerHTML += `<div class="upsell-card"><h5>${u.name}</h5><button class="btn-upsell" onclick="updateQty(${u.id},1); openRecap()">+ Aggiungi</button></div>`;
+            let inCart = Object.keys(cart).filter(k=>cart[k]>0).map(k=>itemMap[k]?.baseId || itemMap[k]?.id);
+            
+            const drinkCategories = ['bibite', 'birre-spina', 'birre-bottiglia', 'bollicine', 'vini-bianchi', 'vini-rosati', 'vini-rossi'];
+            let hasDrink = inCart.some(id => drinkCategories.includes(itemMap[id]?.categoryId));
+            let available = []; menuData.forEach(c=>c.items.forEach(i=> { if(!inCart.includes(i.id)) available.push(i); }));
+            
+            let upsells = [];
+            if(!hasDrink) {
+                let dr = available.filter(i=> drinkCategories.includes(i.categoryId)).sort(()=>0.5-Math.random());
+                if(dr.length) upsells.push(dr[0]);
+            }
+            let food = available.filter(i=> !drinkCategories.includes(i.categoryId) && !upsells.includes(i)).sort(()=>0.5-Math.random());
+            while(upsells.length < 3 && food.length > 0) upsells.push(food.pop());
+
+            upsells.forEach(u => {
+                uc.innerHTML += `<div class="upsell-card"><h4>${u.name}</h4><p style="color:var(--accent-gold);font-weight:900; font-size: 1.1rem;">${u.price.toFixed(2).replace('.',',')}€</p><button class="btn-upsell" onclick="updateQty(${u.id},1); openRecap();">+ Aggiungi</button></div>`;
             });
             document.getElementById('recap-modal').classList.add('active');
         }
 
-        function proceedToCheckout() {
-            closeRecap(); popolaOrari();
-            let subtotal = 0; for(let id in cart) if(cart[id]>0) subtotal += itemMap[id].price * cart[id];
-            let disc = subtotal >= 50 ? 0.20 : (subtotal >= 20 ? 0.10 : 0);
-            document.getElementById('checkout-order-info').innerHTML = `<div style="padding:15px; background:#f0f0f0; border-radius:5px; margin-bottom:15px">Subtotale: ${subtotal.toFixed(2)}€<br>Sconto: -${(subtotal*disc).toFixed(2)}€<br><strong>TOTALE: ${(subtotal*(1-disc)).toFixed(2)}€</strong></div>`;
-            document.getElementById('checkout-modal').classList.add('active');
-        }
-
-        function getAvailableSlots() {
-            let now = new Date(); let actualDay = now.getDay(); let actualHour = now.getHours(); let actualMin = now.getMinutes();
-            let logicalDay = (actualHour < 5) ? (actualDay === 0 ? 6 : actualDay - 1) : actualDay;
-            const sched = { 1: null, 2: {o:19*60, c:25*60}, 3: {o:19*60, c:25*60}, 4: {o:19*60, c:25*60}, 5: {o:19*60, c:26*60+30}, 6: {o:19*60, c:26*60+30}, 0: {o:19*60, c:25*60} };
-            let today = sched[logicalDay]; if(!today) return [];
-            let start = Math.max(today.o, (actualHour < 5 ? actualHour + 24 : actualHour) * 60 + actualMin + 15);
-            let slots = []; for(let t=start; t<=today.c; t+=15) slots.push(`${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`);
-            return slots;
-        }
-
-        function checkStoreStatus() {
-            let slots = getAvailableSlots();
-            document.getElementById('store-closed-banner').style.display = slots.length === 0 ? 'block' : 'none';
-            let btn = document.querySelector('.btn-checkout');
-            if(slots.length === 0) { btn.innerText = "Chiuso"; btn.disabled = true; }
-        }
-
-        function popolaOrari() {
-            let sel = document.getElementById('orario-consegna'); sel.innerHTML = getAvailableSlots().map(s => `<option value="${s}">${s}</option>`).join('');
-        }
-
         function closeRecap() { document.getElementById('recap-modal').classList.remove('active'); }
+        
+        function proceedToCheckout() { 
+            let slots = getAvailableSlots();
+            if (slots.length === 0) {
+                alert("Ci dispiace, il locale ha appena chiuso la ricezione degli ordini per oggi.");
+                closeRecap();
+                return;
+            }
+
+            closeRecap(); 
+            popolaOrari(); 
+            
+            let subtotal = 0;
+            for(let id in cart) {
+                if(cart[id]>0 && itemMap[id]) subtotal += itemMap[id].price * cart[id];
+            }
+            
+            let discountRate = 0;
+            if(subtotal >= 50) discountRate = 0.20;
+            else if(subtotal >= 20) discountRate = 0.10;
+
+            let discountAmount = subtotal * discountRate;
+            let total = subtotal - discountAmount;
+
+            let infoHtml = `<div style="background:var(--bg-body); padding:15px; border-radius:8px; margin-bottom:15px; border:1px solid var(--border-light);">
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.9rem;"><span>Subtotale:</span> <span>${subtotal.toFixed(2).replace('.',',')}€</span></div>`;
+            
+            if(discountRate > 0) {
+                infoHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:5px; color:var(--accent-fire); font-weight:bold; font-size:0.9rem;"><span>Sconto ${discountRate*100}%:</span> <span>-${discountAmount.toFixed(2).replace('.',',')}€</span></div>`;
+            }
+
+            infoHtml += `<div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px dashed var(--border-light); font-weight:900; font-size:1.3rem; color:var(--accent-gold);"><span>TOTALE:</span> <span>${total.toFixed(2).replace('.',',')}€</span></div></div>`;
+
+            if(subtotal < 20) {
+                let missing = 20 - subtotal;
+                infoHtml += `<div class="promo-alert" style="cursor:pointer;" onclick="closeCheckout(); openRecap();">
+                    Aggiungi solo <strong>${missing.toFixed(2).replace('.',',')}€</strong> per avere il <strong>10% di Sconto</strong>!<br>
+                    <span style="text-decoration:underline; font-size:0.8rem; font-weight:bold;">Clicca qui per aggiungere altro</span>
+                </div>`;
+            } else if(subtotal < 50) {
+                let missing = 50 - subtotal;
+                infoHtml += `<div class="promo-alert success" style="cursor:pointer;" onclick="closeCheckout(); openRecap();">
+                    <i class="fa-solid fa-fire"></i> Sconto 10% Attivo! Aggiungi <strong>${missing.toFixed(2).replace('.',',')}€</strong> per il <strong>20%</strong>!<br>
+                    <span style="text-decoration:underline; font-size:0.8rem; font-weight:bold;">Clicca qui per aggiungere altro</span>
+                </div>`;
+            }
+
+            document.getElementById('checkout-order-info').innerHTML = infoHtml;
+            document.getElementById('checkout-modal').classList.add('active'); 
+        }
+
         function closeCheckout() { document.getElementById('checkout-modal').classList.remove('active'); }
 
-        async function sendOrderWithDetails() {
-            const name = document.getElementById('cust-name').value;
-            const time = document.getElementById('orario-consegna').value;
-            if(!name || !time) return alert("Inserisci nome e orario!");
+        function popolaOrari() {
+            const select = document.getElementById('orario-consegna');
+            const btnPay = document.getElementById('pay-btn');
+            select.innerHTML = '';
             
-            let items=[], sub=0;
-            for(let id in cart) if(cart[id]>0) { 
-                items.push({name: itemMap[id].name, price: itemMap[id].price, qty: cart[id]});
-                sub += itemMap[id].price * cart[id];
-            }
-            let disc = sub >= 50 ? 0.20 : (sub >= 20 ? 0.10 : 0);
-            if(disc > 0) items.push({name: `SCONTO ${disc*100}%`, price: -(sub*disc), qty: 1});
+            let slots = getAvailableSlots();
 
-            const btn = document.getElementById('pay-btn'); btn.disabled=true; btn.innerText="Avvio...";
-            try {
-                const res = await fetch("/paga", { method: 'POST', body: JSON.stringify({items, orderId: "TRB-"+Date.now()}) });
-                const data = await res.json();
-                if(data.checkoutId) {
-                    document.getElementById('dati-cliente-form').style.display='none';
-                    document.getElementById('sumup-card-container').style.display='block';
-                    SumUpCard.mount({ id: 'sumup-card', checkoutId: data.checkoutId, onResponse: (t, b) => { if(t==='success' && b.status==='PAID') window.location.href="successo.html"; } });
+            if (slots.length === 0) {
+                select.innerHTML = `<option value="">Locale chiuso al momento</option>`;
+                btnPay.disabled = true;
+                btnPay.style.opacity = '0.5';
+            } else {
+                slots.forEach(slot => {
+                    select.innerHTML += `<option value="${slot}">${slot}</option>`;
+                });
+                btnPay.disabled = false;
+                btnPay.style.opacity = '1';
+            }
+        }
+
+        async function sendOrderWithDetails() {
+            const name = document.getElementById('cust-name').value.trim();
+            const time = document.getElementById('orario-consegna').value;
+            const notes = document.getElementById('cust-notes').value.trim();
+            
+            if(!name || !time) {
+                alert("Compila il nome e l'orario per il ritiro.");
+                return; 
+            }
+
+            const orderId = `TRB-${name.substring(0,2).toUpperCase()}-${Math.floor(1000+Math.random()*9000)}`;
+            let items=[], subtotal=0;
+            
+            // MESSAGGIO SENZA EMOJI
+            let txt = `*NUOVO ORDINE TORB*\nID Rif: ${orderId}\nCliente: ${name}\nRitiro: ${time}\n`;
+            if(notes) txt += `Note: ${notes}\n`;
+            txt += `\n*ORDINE:*\n`;
+
+            for(let id in cart) {
+                if(cart[id]>0 && itemMap[id]) {
+                    let i = itemMap[id];
+                    items.push({ name: i.name, price: i.price, qty: cart[id] });
+                    subtotal += i.price*cart[id];
+                    let varTxt = i.isCustom ? `\n   -> Senza: ${i.removed.join(', ')}` : '';
+                    txt += `- ${cart[id]}x ${i.name} (${(i.price*cart[id]).toFixed(2)} Euro)${varTxt}\n`;
                 }
-            } catch(e) { alert("Errore connessione."); btn.disabled=false; }
+            }
+
+            let discountRate = 0;
+            if(subtotal >= 50) discountRate = 0.20;
+            else if(subtotal >= 20) discountRate = 0.10;
+
+            let total = subtotal;
+
+            if(discountRate > 0) {
+                let discountAmount = subtotal * discountRate;
+                total = subtotal - discountAmount;
+                items.push({ name: `Sconto PROMO ${discountRate*100}%`, price: -discountAmount, qty: 1 });
+                txt += `\n*** SCONTO APPLICATO (${discountRate*100}%): *** -${discountAmount.toFixed(2)} Euro\n`;
+            }
+            
+            if (total < 1.00) { 
+                alert("Attenzione: L'ordine minimo per SumUp è 1.00 Euro!"); 
+                return; 
+            }
+
+            txt += `\n*PAGATO (SumUp): ${total.toFixed(2)} Euro*`;
+            
+            // PULIZIA SICURA LOCAL STORAGE (evita doppi ordini o errori)
+            localStorage.removeItem('torb_order');
+            localStorage.setItem('torb_order', txt);
+
+            const btn = document.getElementById('pay-btn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connessione a SumUp...'; 
+            btn.disabled = true;
+
+            try {
+                const WORKER_URL = "/paga"; 
+
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: items, orderId: orderId })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Errore Server: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.checkoutId) { 
+                    document.getElementById('dati-cliente-form').style.display = 'none';
+                    document.getElementById('checkout-order-info').style.display = 'none';
+                    document.getElementById('sumup-card-container').style.display = 'block';
+                    
+                    SumUpCard.mount({
+                        id: 'sumup-card', 
+                        checkoutId: data.checkoutId,
+                        
+                        googlePay: { merchantId: 'INSERISCI_ID_GOOGLE', merchantName: 'TORB Birreria' },
+                        applePay: { merchantName: 'TORB Birreria' },
+
+                        onResponse: function(type, body) {
+                            if (type === 'success' && body.status === 'PAID') {
+                                window.location.href = "successo.html";
+                            } 
+                            else if (type === 'success' && body.status === 'FAILED') {
+                                alert("Transazione negata dalla banca. Verifica i fondi e riprova.");
+                                window.location.href = "errore.html";
+                            } 
+                            else if (type === 'error' || type === 'fail' || type === 'declined') {
+                                alert("Errore durante il pagamento: " + (body.message || JSON.stringify(body)));
+                                window.location.href = "errore.html";
+                            }
+                        }
+                    });
+                } else {
+                    alert("SumUp non ha generato il checkout. Risposta del server: " + JSON.stringify(data));
+                    btn.innerHTML = '<i class="fa-solid fa-credit-card"></i> Paga Ora (SumUp)'; 
+                    btn.disabled = false;
+                }
+            } catch(e) { 
+                alert("Errore di rete o Backend non trovato!\nVerifica che il link /paga esista su questo sito.\n\nDettaglio: " + e.message); 
+                btn.innerHTML = '<i class="fa-solid fa-credit-card"></i> Paga Ora (SumUp)'; 
+                btn.disabled = false; 
+            }
         }
 
         window.onload = initApp;
