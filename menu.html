@@ -86,33 +86,44 @@
         .hero-subtitle-action { color: var(--accent-gold); font-size: 1.3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
 
         /* FILTRI & MENU */
-        .filters-container { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; position: sticky; top: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--border-light); box-shadow: 0 4px 10px rgba(0,0,0,0.03);}
+        .filters-wrapper { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-light); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .filters-container { display: flex; overflow-x: auto; gap: 8px; padding: 12px 16px; scrollbar-width: none; }
         .filters-container::-webkit-scrollbar { display: none; }
-        .filter-btn { background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-light); padding: 8px 18px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; white-space: nowrap; cursor: pointer; text-transform: uppercase; transition: all 0.3s; }
-        .filter-btn.active { background: var(--accent-gold); color: #ffffff; border-color: var(--accent-gold); box-shadow: 0 4px 10px rgba(184, 134, 11, 0.2); }
+        /* Indicatore scroll sui lati */
+        .filters-wrapper::after { content: ''; position: absolute; right: 0; top: 0; height: 100%; width: 40px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.95)); pointer-events: none; }
+        .filter-btn { background: var(--bg-body); color: var(--text-muted); border: 1.5px solid var(--border-light); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.78rem; white-space: nowrap; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.25s; flex-shrink: 0; }
+        .filter-btn:active { transform: scale(0.95); }
+        .filter-btn.active { background: var(--accent-gold); color: #ffffff; border-color: var(--accent-gold); box-shadow: 0 3px 10px rgba(184, 134, 11, 0.3); }
         
-        .menu-container { padding: 0 15px; max-width: 1000px; margin: 0 auto;}
-        .category-section { display: block; animation: fadeIn 0.4s ease-in-out; }
+        .menu-container { padding: 0 15px 20px; max-width: 1000px; margin: 0 auto; }
+        .category-section { display: block; animation: fadeIn 0.35s ease-out; }
         .category-section.hidden { display: none !important; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .category-title { padding: 40px 5px 15px; font-size: 1.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; border-bottom: 1px dashed var(--border-light); margin-bottom: 15px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .category-title { padding: 36px 5px 12px; font-size: 1.5rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .category-title::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, var(--accent-gold), transparent); opacity: 0.3; }
         
-        .menu-item { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 20px; margin: 15px 0; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: transform 0.2s;}
+        .menu-item { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 10px; padding: 18px 18px 14px; margin: 12px 0; display: flex; flex-direction: column; box-shadow: 0 2px 10px rgba(0,0,0,0.04); transition: box-shadow 0.2s; }
+        .menu-item:active { box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+        /* card evidenziata quando ha prodotti nel carrello */
+        .menu-item.in-cart { border-color: rgba(184,134,11,0.4); box-shadow: 0 0 0 2px rgba(184,134,11,0.12), 0 2px 10px rgba(0,0,0,0.04); }
         
-        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .item-name { font-size: 1.1rem; font-weight: 800; color: var(--text-main); line-height: 1.3; padding-right: 10px; text-transform: uppercase;}
-        .item-price { font-size: 1.2rem; font-weight: 800; color: var(--accent-gold); white-space: nowrap; }
-        .item-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; flex-grow: 1; font-weight: 500;}
+        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .item-name { font-size: 1rem; font-weight: 800; color: var(--text-main); line-height: 1.3; padding-right: 10px; text-transform: uppercase; }
+        .item-price { font-size: 1.15rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap; }
+        .item-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 12px; flex-grow: 1; font-weight: 500; font-style: italic; }
         
-        .controls { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 15px; border-top: 1px solid var(--border-light); }
-        .qty-box { display: flex; align-items: center; gap: 15px; }
+        .controls { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-light); }
+        .qty-box { display: flex; align-items: center; gap: 12px; }
         
-        .btn-control { background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border-light); border-radius: 4px; width: 32px; height: 32px; font-size: 1rem; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
-        .btn-control:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
-        .qty { font-weight: 800; font-size: 1.2rem; min-width: 25px; text-align: center; }
+        .btn-control { background: var(--bg-body); color: var(--text-main); border: 1.5px solid var(--border-light); border-radius: 50%; width: 34px; height: 34px; font-size: 1rem; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
+        .btn-control:active { transform: scale(0.9); }
+        .btn-control.active-minus { border-color: var(--accent-fire); color: var(--accent-fire); }
+        .btn-control.active-plus { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(184,134,11,0.06); }
+        .qty { font-weight: 900; font-size: 1.2rem; min-width: 22px; text-align: center; color: var(--text-main); }
+        .qty.has-qty { color: var(--accent-gold); }
 
-        .btn-custom { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: 4px; padding: 6px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.2s;}
-        .btn-custom:hover { border-color: var(--accent-fire); color: var(--accent-fire); }
+        .btn-custom { background: transparent; color: var(--text-muted); border: 1px solid var(--border-light); border-radius: 20px; padding: 5px 12px; font-size: 0.72rem; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.2s; flex-shrink: 0; margin-right: auto; }
+        .btn-custom:active { background: #fff0f0; border-color: var(--accent-fire); color: var(--accent-fire); }
         
         .variant-item { background: var(--bg-body); padding: 12px; border-radius: 4px; margin-top: 12px; border-left: 3px solid var(--accent-fire); border: 1px solid var(--border-light);}
         .variant-desc { font-size: 0.8rem; color: var(--accent-fire); margin-bottom: 5px; line-height: 1.4; font-weight: 600;}
@@ -139,11 +150,12 @@
         .btn-remove-recap:hover { color: var(--accent-fire); border-color: var(--accent-fire); background: #fff5f5; }
 
         /* UPSELL */
-        .upsell-container { display: grid; grid-template-columns: 1fr; gap: 12px; padding-bottom: 10px; margin-top: 15px; }
-        .upsell-card { background: var(--bg-body); border: 1px solid var(--border-light); padding: 15px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
-        .upsell-card h4 { font-size: 0.95rem; margin-bottom: 8px; color: var(--text-main); font-weight: 700;}
-        .btn-upsell { background: transparent; color: var(--accent-gold); border: 1px solid var(--accent-gold); padding: 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 800; width: 100%; text-transform: uppercase; margin-top: 10px; cursor: pointer; transition: all 0.3s; }
-        .btn-upsell:hover { background: var(--accent-gold); color: #ffffff; }
+        .upsell-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 10px; margin-top: 15px; }
+        .upsell-card { background: var(--bg-body); border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        .upsell-card h4 { font-size: 0.82rem; margin-bottom: 6px; color: var(--text-main); font-weight: 700; text-transform: uppercase; line-height: 1.3; }
+        .upsell-card .upsell-price { color: var(--accent-gold); font-weight: 900; font-size: 1rem; margin-bottom: 6px; }
+        .btn-upsell { background: var(--accent-gold); color: #fff; border: none; padding: 9px; border-radius: 6px; font-size: 0.78rem; font-weight: 800; width: 100%; text-transform: uppercase; margin-top: 6px; cursor: pointer; transition: all 0.2s; }
+        .btn-upsell:active { transform: scale(0.97); background: #9e730a; }
 
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: var(--text-muted); text-transform: uppercase;}
@@ -178,18 +190,25 @@
         
         .alert-box { background: #fff5f5; border: 1px dashed var(--accent-fire); padding: 15px; border-radius: 4px; margin-bottom: 20px; font-size: 0.85rem; color: var(--text-main); line-height: 1.5; font-weight: 500;}
 
-        .cart-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); transform: translateY(120%); transition: transform 0.3s ease; z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+        .cart-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); transform: translateY(120%); transition: transform 0.35s cubic-bezier(0.34,1.2,0.64,1); z-index: 1000; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); }
         .cart-footer.visible { transform: translateY(0); }
-        .cart-total { font-size: 1.4rem; font-weight: 900; color: var(--accent-gold); display: flex; align-items: center;}
-        .btn-checkout { background: var(--accent-gold); color: #ffffff; border: none; padding: 14px 28px; border-radius: 4px; font-size: 1rem; font-weight: 900; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 15px rgba(184, 134, 11, 0.2); transition: 0.3s;}
-        .btn-checkout:hover { background: #9e730a; }
+        .cart-count-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--accent-fire); color: #fff; font-size: 0.65rem; font-weight: 900; border-radius: 50%; width: 18px; height: 18px; margin-right: 8px; }
+        .cart-total { font-size: 1.35rem; font-weight: 900; color: var(--accent-gold); display: flex; align-items: center; }
+        .btn-checkout { background: var(--accent-gold); color: #ffffff; border: none; padding: 13px 24px; border-radius: 8px; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 15px rgba(184, 134, 11, 0.25); transition: 0.25s; letter-spacing: 0.5px; }
+        .btn-checkout:active { transform: scale(0.97); background: #9e730a; }
 
         @media (min-width: 768px) {
-            .filters-container { justify-content: center; }
-            .category-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .filters-container { justify-content: center; padding: 14px 24px; }
+            .filters-wrapper::after { display: none; }
+            .filter-btn { font-size: 0.8rem; padding: 9px 20px; }
+            .category-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
             .category-title { grid-column: span 2; }
             .menu-item { margin: 0; height: 100%; }
             .upsell-container { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .category-section { grid-template-columns: repeat(3, 1fr); }
+            .category-title { grid-column: span 3; }
         }
     </style>
 </head>
@@ -208,15 +227,15 @@
         <h2 class="hero-subtitle-action">Ordina qui e ritira in sede</h2>
     </header>
 
-    <div class="filters-container" id="filters-container"></div>
+    <div class="filters-wrapper"><div class="filters-container" id="filters-container"></div></div>
     <div id="menu-container" class="menu-container"></div>
 
     <div class="cart-footer" id="cart-footer">
         <div>
-            <span style="display:block; font-size: 0.75rem; color: var(--text-muted); font-weight:700; text-transform: uppercase;">Totale Ordine</span>
-            <div class="cart-total" id="total-price">0,00 €</div>
+            <span style="display:block; font-size: 0.72rem; color: var(--text-muted); font-weight:700; text-transform: uppercase; letter-spacing:0.5px;">Totale Ordine</span>
+            <div class="cart-total"><span class="cart-count-badge" id="cart-count">0</span><span id="total-price">0,00 €</span></div>
         </div>
-        <button class="btn-checkout" onclick="openRecap()">Procedi <i class="fa-solid fa-arrow-right"></i></button>
+        <button class="btn-checkout" onclick="openRecap()">Carrello &nbsp;<i class="fa-solid fa-basket-shopping"></i></button>
     </div>
 
     <div class="checkout-modal" id="custom-modal" onclick="if(event.target === this) closeCustomModal()">
@@ -562,25 +581,22 @@
             menuData.forEach(cat => {
                 let html = `<div class="category-section" id="cat-${cat.id}"><h2 class="category-title">${cat.category}</h2>`;
                 cat.items.forEach(item => {
-                    
-                    // BLOCCO LA PERSONALIZZAZIONE PER BEVANDE, CONTORNI E DOLCI
-                    let hideCustomBtn = (cat.id === 'bibite' || cat.id === 'birre-spina' || cat.id === 'birre-bottiglia' || cat.id === 'bollicine' || cat.id.startsWith('vini') || cat.id === 'contorni' || cat.id === 'dolci' || !item.desc);
-                    let customBtn = hideCustomBtn ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen"></i> Rimuovi Ingr.</button>`;
+                    const hideCustomBtn = (cat.id === 'bibite' || cat.id === 'birre-spina' || cat.id === 'birre-bottiglia' || cat.id === 'bollicine' || cat.id.startsWith('vini') || cat.id === 'contorni' || cat.id === 'dolci' || !item.desc);
+                    const customBtn = hideCustomBtn ? '' : `<button class="btn-custom" onclick="openCustomModal(${item.id})"><i class="fa-solid fa-pen fa-xs"></i> Rimuovi</button>`;
                     
                     html += `
-                        <div class="menu-item">
+                        <div class="menu-item" data-id="${item.id}">
                             <div class="item-header">
                                 <div class="item-name">${item.name}</div>
                                 <div class="item-price">${item.price.toFixed(2).replace('.',',')}€</div>
                             </div>
-                            <p class="item-desc">${item.desc || ""}</p>
+                            ${item.desc ? `<p class="item-desc">${item.desc}</p>` : ''}
                             <div class="controls">
                                 ${customBtn}
-                                <div style="flex-grow:1;"></div>
                                 <div class="qty-box">
-                                    <button class="btn-control" onclick="handleRemoveClick('${item.id}')"><i class="fa-solid fa-minus"></i></button>
+                                    <button class="btn-control" id="minus-${item.id}" onclick="handleRemoveClick('${item.id}')"><i class="fa-solid fa-minus fa-xs"></i></button>
                                     <span class="qty" id="qty-${item.id}">0</span>
-                                    <button class="btn-control" onclick="handleAddClick('${item.id}')"><i class="fa-solid fa-plus"></i></button>
+                                    <button class="btn-control active-plus" onclick="handleAddClick('${item.id}')"><i class="fa-solid fa-plus fa-xs"></i></button>
                                 </div>
                             </div>
                             <div id="variants-${item.id}"></div>
@@ -637,14 +653,26 @@
 
             let priceHtml = '';
             if(discountRate > 0) {
-                priceHtml = `<span style="text-decoration:line-through; font-size:0.9rem; color:var(--text-muted); margin-right:8px;">${subtotal.toFixed(2).replace('.',',')}€</span>${total.toFixed(2).replace('.',',')} € <span style="font-size:0.8rem; color:var(--accent-fire); font-weight:800; margin-left:5px;">-${discountRate*100}%</span>`;
+                priceHtml = `<span style="text-decoration:line-through; font-size:0.85rem; color:var(--text-muted); margin-right:6px;">${subtotal.toFixed(2).replace('.',',')}€</span>${total.toFixed(2).replace('.',',')} € <span style="font-size:0.75rem; color:var(--accent-fire); font-weight:900; margin-left:4px;">-${discountRate*100}%</span>`;
             } else {
                 priceHtml = `${total.toFixed(2).replace('.',',')} €`;
             }
 
             document.getElementById('total-price').innerHTML = priceHtml;
+            const badge = document.getElementById('cart-count');
+            if(badge) badge.textContent = count;
             const f = document.getElementById('cart-footer');
             count > 0 ? f.classList.add('visible') : f.classList.remove('visible');
+
+            // Evidenzia le card con articoli nel carrello
+            document.querySelectorAll('.menu-item[data-id]').forEach(card => {
+                const baseId = card.dataset.id;
+                let inCart = (cart[baseId] > 0);
+                if(!inCart) {
+                    for(let k in cart) { if(cart[k] > 0 && itemMap[k]?.isCustom && String(itemMap[k].baseId) === baseId) { inCart = true; break; } }
+                }
+                inCart ? card.classList.add('in-cart') : card.classList.remove('in-cart');
+            });
         }
 
         function openCustomModal(id) {
@@ -729,7 +757,7 @@
             while(upsells.length < 3 && food.length > 0) upsells.push(food.pop());
 
             upsells.forEach(u => {
-                uc.innerHTML += `<div class="upsell-card"><h4>${u.name}</h4><p style="color:var(--accent-gold);font-weight:900; font-size: 1.1rem;">${u.price.toFixed(2).replace('.',',')}€</p><button class="btn-upsell" onclick="updateQty(${u.id},1); openRecap();">+ Aggiungi</button></div>`;
+                uc.innerHTML += `<div class="upsell-card"><h4>${u.name}</h4><div class="upsell-price">${u.price.toFixed(2).replace('.',',')}€</div><button class="btn-upsell" onclick="updateQty(${u.id},1); openRecap();"><i class="fa-solid fa-plus fa-xs"></i> Aggiungi</button></div>`;
             });
             document.getElementById('recap-modal').classList.add('active');
         }
